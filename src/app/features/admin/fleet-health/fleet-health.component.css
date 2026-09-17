@@ -1,0 +1,397 @@
+/* ==========================================================================
+   Follower Counter - Hardware Fleet & Telemetry Operations Center
+   Design Language: Warm Ivory Canvas, Deep Ink Slate, Instagram Sunset Accents
+   ========================================================================== */
+
+.fleet-page {
+  padding-top: 1.75rem;
+  padding-bottom: 5rem;
+  min-height: calc(100vh - 65px);
+  background-color: var(--bg-canvas);
+}
+
+/* Horizon Operations Bar */
+.fleet-horizon-bar {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.telemetry-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulseLiveDot 2s infinite ease-in-out;
+}
+
+.live-dot.is-degraded {
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+}
+
+@keyframes pulseLiveDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.85); }
+}
+
+.telemetry-sub-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.telemetry-time-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #0369a1;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.fleet-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  letter-spacing: -0.02em;
+  margin-top: 0.25rem;
+}
+
+.fleet-subtitle {
+  color: var(--text-muted);
+  max-width: 680px;
+  margin-top: 0.25rem;
+  line-height: 1.5;
+}
+
+/* Spinning Animation for Refresh */
+.refresh-spinner {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.refresh-spinner.spinning {
+  animation: spinTelemetry 0.8s linear infinite;
+}
+
+@keyframes spinTelemetry {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 5-Metric Command Grid */
+.metric-tile {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.metric-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border-default);
+}
+
+.metric-tile.has-issue {
+  border-color: #fed7aa;
+  background: #fffdfa;
+}
+
+.metric-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+}
+
+.metric-tag {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--bg-surface-subtle);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+}
+
+.metric-tag.ig-tag {
+  background: rgba(221, 42, 123, 0.08);
+  color: #dd2a7b;
+  border-color: rgba(221, 42, 123, 0.2);
+}
+
+.status-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+.status-pulse-dot.is-healthy {
+  background: #10b981;
+  box-shadow: 0 0 7px #10b981;
+}
+
+.metric-value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  line-height: 1;
+}
+
+.metric-unit {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.metric-subtext {
+  display: block;
+  line-height: 1.35;
+}
+
+/* Segmented Navigation Tabs */
+.fleet-tabs-nav {
+  display: inline-flex;
+  background: #f4efe6;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.fleet-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.15rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-body);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.fleet-tab-btn:hover {
+  color: var(--text-heading);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.fleet-tab-btn.active {
+  background: #ffffff;
+  color: var(--text-heading);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(28, 25, 23, 0.08);
+}
+
+.tab-icon {
+  font-size: 0.95rem;
+}
+
+/* Subsystems Architecture Cards */
+.subsystem-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.35rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.subsystem-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ig-gradient-box {
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 50%, #8134af 100%);
+  box-shadow: 0 2px 6px rgba(221, 42, 123, 0.28);
+}
+
+.subsystem-svg {
+  width: 18px;
+  height: 18px;
+}
+
+.brass-box {
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+
+.slate-box {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.amber-box {
+  background: #fff7ed;
+  border: 1px solid #ffedd5;
+  color: #c2410c;
+}
+
+.subsystem-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.spec-item {
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+}
+
+.spec-label {
+  display: block;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.spec-val {
+  display: block;
+  font-size: 0.775rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+/* Device Table & Mini Chips */
+.serial-tag {
+  letter-spacing: 0.04em;
+}
+
+.btn-copy-sm {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  padding: 1px 4px;
+  border-radius: 3px;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.btn-copy-sm:hover {
+  opacity: 1;
+  background: var(--bg-surface-subtle);
+}
+
+.chip-firmware {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.ig-avatar-mini {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 50%, #8134af 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ig-mini-svg {
+  width: 14px;
+  height: 14px;
+}
+
+.search-box {
+  min-width: 220px;
+}
+
+.custom-select-sm {
+  height: 32px;
+  padding: 0 0.5rem;
+}
+
+/* Responsive Grid adjustments */
+@media (max-width: 1100px) {
+  .grid-cols-1.md\:grid-cols-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-cols-1.md\:grid-cols-5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .subsystem-spec-grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .fleet-tabs-nav {
+    width: 100%;
+  }
+  .fleet-tab-btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-cols-1.md\:grid-cols-5 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+/* Animation utilities */
+.animate-fade-in {
+  animation: fadeInTelemetry 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInTelemetry {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,116 @@
+<div class="physical-counter-container" role="region" aria-label="Physical Instagram Follower Counter Showcase">
+  <!-- Outer Physical Enclosure Chassis -->
+  <div class="hardware-chassis" [class.chassis-5]="digitCount === 5" [class.chassis-7]="digitCount === 7">
+    <!-- Tactile Hex Rivet Screws -->
+    <div class="fastener fastener-tl" aria-hidden="true"></div>
+    <div class="fastener fastener-tr" aria-hidden="true"></div>
+    <div class="fastener fastener-bl" aria-hidden="true"></div>
+    <div class="fastener fastener-br" aria-hidden="true"></div>
+
+    <!-- Top Engraved Brass Instrument Plaque -->
+    <div class="brass-header-plate">
+      <div class="plate-left flex items-center gap-2.5">
+        <div class="ig-symbol-bezel" aria-label="Instagram Connected Display">
+          <svg class="ig-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" stroke="white" stroke-width="2"/>
+            <circle cx="12" cy="12" r="4.2" stroke="white" stroke-width="2"/>
+            <circle cx="17.2" cy="6.8" r="1.2" fill="white"/>
+          </svg>
+        </div>
+        <div class="plate-inscription">
+          <span class="plate-script font-mono">LIVE INSTAGRAM DISPLAY</span>
+          <span class="plate-title font-heading">FOLLOWER<span class="plate-highlight">COUNTER</span></span>
+        </div>
+      </div>
+
+      <div class="plate-right flex items-center gap-2">
+        <span class="drum-code-badge font-mono">{{ modelCode }}</span>
+        <div class="status-indicator-dot" [class.dot-live]="isOperational && !isStale" [class.dot-stale]="isStale" [class.dot-offline]="isOffline"></div>
+      </div>
+    </div>
+
+    <!-- Recessed Optical Window -->
+    <div class="aperture-recess">
+      <!-- Anti-Reflective Optical Sheen -->
+      <div class="optical-glare" aria-hidden="true"></div>
+
+      <!-- Split-Flap Display Unit Drum -->
+      <div class="drum-chamber flex items-center justify-center">
+        @for (digit of digits; track $index) {
+          <div
+            class="flap-module"
+            [class.is-flipping]="flippingIndices.has($index)"
+            [attr.aria-label]="'Digit ' + ($index + 1) + ': ' + digit"
+          >
+            <!-- Top Half Flap Leaf -->
+            <div class="flap-leaf flap-top">
+              <div class="digit-glyph font-mono">{{ digit }}</div>
+              <div class="leaf-crease-shadow"></div>
+            </div>
+
+            <!-- Bottom Half Flap Leaf -->
+            <div class="flap-leaf flap-bottom">
+              <div class="digit-glyph font-mono">{{ digit }}</div>
+              <div class="leaf-shelf-shadow"></div>
+            </div>
+
+            <!-- Mechanical Hinge Axle -->
+            <div class="hinge-axle" aria-hidden="true"></div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Instrument Telemetry Footer Plate -->
+    <div class="chassis-footer flex items-center justify-between flex-wrap gap-2">
+      <!-- Account Handle -->
+      <div class="flex items-center gap-2">
+        @if (username) {
+          <span class="feed-indicator flex items-center gap-1.5 font-mono">
+            <span class="feed-pulse"></span>
+            &#64;{{ username }}
+          </span>
+        } @else {
+          <span class="feed-indicator feed-idle font-mono">
+            No Account Linked
+          </span>
+        }
+        <span class="chassis-device-tag font-mono">{{ displayLabel }}</span>
+      </div>
+
+      <!-- Live Sync Metrology & Trigger -->
+      <div class="flex items-center gap-3">
+        <div class="sync-metrology font-mono text-xs">
+          <span class="metrology-label">LAST SYNC:</span>
+          <span class="metrology-val">{{ formattedLastSync }}</span>
+        </div>
+
+        @if (username) {
+          <button
+            type="button"
+            (click)="onTriggerRefresh()"
+            [disabled]="isRefreshing"
+            class="chassis-sync-btn"
+            [title]="isRefreshing ? 'Synchronizing with Instagram...' : 'Manually synchronize follower count'"
+            aria-label="Synchronize follower count"
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              [class.spin-active]="isRefreshing"
+            >
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            <span>{{ isRefreshing ? 'SYNCING...' : 'SYNC' }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,727 @@
+<div class="dashboard-page" role="main">
+  <div class="container">
+    <!-- Toast Notification Stack -->
+    @if (successMessage) {
+      <div class="toast-alert alert-success" [class.toast-closing]="isSuccessToastClosing" role="status" aria-live="polite">
+        <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <div class="toast-message flex-1 font-medium">{{ successMessage }}</div>
+        <button (click)="closeSuccessToast()" class="toast-close" aria-label="Dismiss notification">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    }
+
+    @if (errorMessage) {
+      <div class="toast-alert alert-danger" [class.toast-closing]="isErrorToastClosing" role="alert" aria-live="assertive">
+        <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <div class="toast-message flex-1 font-medium">{{ errorMessage }}</div>
+        <button (click)="closeErrorToast()" class="toast-close" aria-label="Dismiss error">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    }
+
+    <!-- Compact Dashboard Horizon Header Bar -->
+    <section class="horizon-bar card mt-4" aria-label="Dashboard Overview Bar">
+      <div class="horizon-bar-content flex items-center justify-between flex-wrap gap-4">
+        <!-- Telemetry Status Badges -->
+        <div class="horizon-bar-left flex items-center gap-3 flex-wrap">
+          <!-- Instagram Connection Indicator -->
+          <div class="status-indicator-pill" [class.pill-connected]="isInstagramConnected" [class.pill-disconnected]="!isInstagramConnected">
+            <span class="pill-dot"></span>
+            <span class="pill-label font-mono">
+              {{ isInstagramConnected ? 'INSTAGRAM CONNECTED' : 'INSTAGRAM OFFLINE' }}
+            </span>
+          </div>
+
+          <!-- Device Online/Offline Indicator -->
+          <div class="status-indicator-pill" [class.pill-connected]="isHardwareOnline" [class.pill-disconnected]="!isHardwareOnline">
+            <span class="pill-dot"></span>
+            <span class="pill-label font-mono">
+              {{ isHardwareOnline ? 'HARDWARE ONLINE' : 'HARDWARE STANDBY' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Quick Action Controls -->
+        <div class="horizon-bar-right flex items-center gap-2 flex-wrap">
+          @if (activeLinkedDevices.length > 0) {
+            <div class="switcher-box flex items-center gap-2">
+              <label for="activeDeviceSelect" class="switcher-label font-mono">ACTIVE COUNTER:</label>
+              <select
+                id="activeDeviceSelect"
+                [ngModel]="selectedDevice?.id"
+                (ngModelChange)="onSelectDeviceById($event)"
+                class="custom-select text-xs font-mono"
+              >
+                @for (dev of activeLinkedDevices; track dev.id) {
+                  <option [value]="dev.id">
+                    {{ dev.nickname ? dev.nickname + ' (' + dev.serialNumber + ')' : dev.serialNumber }}
+                  </option>
+                }
+              </select>
+            </div>
+          }
+
+          <button (click)="openClaimModal()" class="btn btn-secondary btn-sm flex items-center gap-1.5" title="Register physical counter unit">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Pair Unit</span>
+          </button>
+
+          <button (click)="connectInstagram()" class="btn btn-ig btn-sm flex items-center gap-1.5" title="Link new Instagram profile via OAuth">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span>Link Profile</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Critical Reauthorization Alert Banner -->
+    @if (activeAccount?.requiresReauthorization || activeAccount?.connectionStatus === 'ReauthorizationRequired') {
+      <div class="alert alert-warning flex items-center justify-between flex-wrap gap-3 mt-4" role="alert">
+        <div class="flex items-center gap-2.5">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span class="text-sm font-semibold">
+            Instagram Graph API authorization has expired for &#64;{{ activeAccount?.username }}.
+          </span>
+        </div>
+        <button (click)="connectInstagram()" class="btn btn-oxblood btn-sm">
+          Renew Authorization Now
+        </button>
+      </div>
+    }
+
+    <!-- Main Physical Counter Showcase Stage -->
+    <section class="counter-showcase-stage mt-6" aria-label="Follower Counter Showcase Stage">
+      <!-- Showroom Enclosure Frame -->
+      <div class="showcase-card card p-0">
+        <!-- Stage Sub-Header -->
+        <div class="stage-subhead flex items-center justify-between flex-wrap gap-3 p-4 border-b border-subtle">
+          <div class="flex items-center gap-3">
+            @if (activeAccount) {
+              <div class="feed-badge flex items-center gap-2">
+                <span class="feed-pulse-dot"></span>
+                <span class="feed-handle font-mono font-bold text-heading text-sm">
+                  &#64;{{ activeAccount.username }}
+                </span>
+                <span class="feed-verified-pill font-mono">VERIFIED FEED</span>
+              </div>
+            } @else {
+              <div class="feed-badge feed-badge-idle flex items-center gap-2">
+                <span class="feed-idle-dot"></span>
+                <span class="font-mono text-xs text-muted">Awaiting Profile Link</span>
+              </div>
+            }
+          </div>
+
+          <div class="flex items-center gap-2">
+            @if (activeAccount) {
+              <button
+                type="button"
+                (click)="onRefreshFollowers()"
+                [disabled]="isRefreshing"
+                class="btn btn-secondary btn-sm flex items-center gap-1.5"
+                title="Synchronize live follower metrics with Instagram Graph API"
+              >
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  [class.spin-active]="isRefreshing"
+                >
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <polyline points="1 20 1 14 7 14"></polyline>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                <span>{{ isRefreshing ? 'Synchronizing...' : 'Sync Follower Count' }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Physical Flap Counter Reusable Component -->
+        <div class="showcase-display-chamber py-8 px-4 flex justify-center">
+          <app-follower-counter
+            [count]="currentFollowerCount"
+            [digitCount]="activeDigitCount"
+            [username]="activeAccount?.username"
+            [deviceStatus]="selectedDevice?.status"
+            [connectionStatus]="activeAccount?.connectionStatus"
+            [lastSyncTime]="activeAccount?.lastFollowerRefreshAt"
+            [isRefreshing]="isRefreshing"
+            [deviceSerialNumber]="selectedDevice?.serialNumber"
+            [deviceNickname]="selectedDevice?.nickname"
+            (refresh)="onRefreshFollowers()"
+          ></app-follower-counter>
+        </div>
+
+        <!-- Telemetry Metrology Strip -->
+        <div class="showcase-telemetry-strip grid grid-cols-2 md:grid-cols-4 gap-4 p-4 border-t border-subtle">
+          <!-- Metric 1: Audience Reach -->
+          <div class="telemetry-box">
+            <span class="telemetry-heading font-mono">AUDIENCE REACH</span>
+            <span class="telemetry-stat font-mono text-heading">
+              {{ currentFollowerCount | number }}
+            </span>
+            <span class="telemetry-sub font-mono text-muted">Verified Followers</span>
+          </div>
+
+          <!-- Metric 2: Sequence Number -->
+          <div class="telemetry-box">
+            <span class="telemetry-heading font-mono">REEL SEQUENCE</span>
+            <div class="flex items-center gap-2">
+              <span class="telemetry-stat font-mono">
+                #{{ activeAccount?.followerSequence || 0 }}
+              </span>
+              <span class="telemetry-tag font-mono">VERIFIED</span>
+            </div>
+            <span class="telemetry-sub font-mono text-muted">Consecutive Sync</span>
+          </div>
+
+          <!-- Metric 3: Drum Configuration -->
+          <div class="telemetry-box">
+            <span class="telemetry-heading font-mono">DRUM CONFIGURATION</span>
+            <span class="telemetry-stat font-mono text-sm">
+              {{ activeDigitCount }} FLAP REELS
+            </span>
+            <span class="telemetry-sub font-mono text-muted">Model FC-0{{ activeDigitCount }}</span>
+          </div>
+
+          <!-- Metric 4: Target Terminal -->
+          <div class="telemetry-box">
+            <span class="telemetry-heading font-mono">TARGET TERMINAL</span>
+            <span class="telemetry-stat font-mono text-sm truncate" [title]="selectedDevice?.serialNumber || 'Unassigned'">
+              @if (selectedDevice) {
+                {{ selectedDevice.nickname ? selectedDevice.nickname : selectedDevice.serialNumber }}
+              } @else {
+                <span class="text-dim italic">Unassigned</span>
+              }
+            </span>
+            <span class="telemetry-sub font-mono text-muted">
+              {{ selectedDevice?.serialNumber || 'Hardware Idle' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-Column Operational Management Console -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+      
+      <!-- Column 1: Physical Hardware Counters Fleet -->
+      <section class="card" aria-label="Physical Hardware Units Management">
+        <div class="card-header flex items-center justify-between pb-3 border-b border-subtle">
+          <div class="flex items-center gap-3">
+            <div class="panel-icon-wrap" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-base font-bold text-heading">Physical Hardware Counters</h2>
+              <p class="text-xs text-muted">Electro-mechanical display units paired to your account</p>
+            </div>
+          </div>
+
+          <button (click)="openClaimModal()" class="btn btn-secondary btn-xs flex items-center gap-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Pair Unit</span>
+          </button>
+        </div>
+
+        @if (devices.length === 0) {
+          <!-- Empty State for Hardware -->
+          <div class="empty-terminal-state">
+            <div class="empty-symbol-ring">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+            </div>
+            <h3 class="font-bold text-heading text-sm mt-3">No Hardware Display Paired</h3>
+            <p class="text-xs text-muted mt-1 max-w-xs mx-auto">
+              Unbox your physical counter and enter the serial number and claim code from the security envelope.
+            </p>
+            <button (click)="openClaimModal()" class="btn btn-primary btn-sm mt-4">
+              Pair First Display Unit
+            </button>
+          </div>
+        } @else {
+          <!-- Device Fleet List -->
+          <div class="device-fleet-list flex flex-col gap-3 mt-4">
+            @for (device of devices; track device.id) {
+              <div class="device-row-card p-4 rounded border border-subtle bg-surface hover:border-strong transition-all">
+                <!-- Row Header: Nickname, Serial, Status & Firmware -->
+                <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="device-serial-chip flex items-center gap-2 font-mono">
+                      <span class="status-pip" [class.pip-active]="device.status === 'Active'"></span>
+                      <span class="device-name text-xs font-bold text-heading">
+                        @if (device.nickname) {
+                          {{ device.nickname }} <span class="serial-sub text-dim font-normal">({{ device.serialNumber }})</span>
+                        } @else {
+                          {{ device.serialNumber }}
+                        }
+                      </span>
+                      <button
+                        type="button"
+                        class="btn-edit-nick"
+                        title="Edit display name"
+                        (click)="openEditNicknameModal(device)"
+                        aria-label="Edit display name"
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M12 20h9"></path>
+                          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                        </svg>
+                      </button>
+                    </div>
+
+                    <app-status-badge [status]="device.status"></app-status-badge>
+                  </div>
+
+                  <span class="firmware-badge font-mono text-xs text-muted">
+                    {{ device.firmwareVersion || 'FW v2.4.0' }}
+                  </span>
+                </div>
+
+                <!-- Feed Binding Selection Row -->
+                <div class="device-binding-row flex items-center justify-between pt-3 border-t border-subtle flex-wrap gap-2">
+                  <div class="text-xs flex items-center gap-2">
+                    <span class="font-semibold text-heading">Active Feed:</span>
+                    @if (device.linkedInstagramAccount) {
+                      <span class="feed-active-tag font-mono font-medium text-heading">
+                        &#64;{{ device.linkedInstagramAccount.username }}
+                      </span>
+                    } @else {
+                      <span class="feed-unlinked-tag font-mono text-xs">Unlinked (Idle)</span>
+                    }
+                  </div>
+
+                  <div class="bind-select-container">
+                    @if (accounts.length > 0) {
+                      <select
+                        [value]="device.linkedInstagramAccount?.id ?? ''"
+                        (change)="onBindDevice(device, $event)"
+                        class="custom-select text-xs font-mono"
+                        aria-label="Assign Instagram feed to this unit"
+                      >
+                        <option value="">-- Disconnect Feed --</option>
+                        @for (acc of accounts; track acc.id) {
+                          <option [value]="acc.id">&#64;{{ acc.username }}</option>
+                        }
+                      </select>
+                    } @else {
+                      <span class="text-xs text-dim italic">Link profile first</span>
+                    }
+                  </div>
+                </div>
+
+                <!-- Showroom Focus & Drum Spec Row -->
+                <div class="device-meta-row flex items-center justify-between pt-3 mt-3 border-t border-subtle flex-wrap gap-2">
+                  <div class="flex items-center gap-2">
+                    @if (device.status === 'Active' && device.linkedInstagramAccount) {
+                      @if (selectedDevice?.id === device.id) {
+                        <span class="live-pill font-mono">
+                          <span class="pulse-dot"></span>
+                          SHOWROOM BROADCAST ACTIVE
+                        </span>
+                      } @else {
+                        <button
+                          type="button"
+                          (click)="selectDevice(device)"
+                          class="btn btn-secondary btn-xs flex items-center gap-1.5"
+                          title="Display this unit on the showroom counter stage"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                          </svg>
+                          <span>View on Counter</span>
+                        </button>
+                      }
+                    } @else {
+                      @if (device.status !== 'Active') {
+                        <span class="text-xs text-dim italic">Hardware Inactive</span>
+                      } @else {
+                        <span class="text-xs text-oxblood font-medium italic">Assign Instagram feed to broadcast</span>
+                      }
+                    }
+                  </div>
+
+                  <div class="drum-spec-tag font-mono text-xs text-muted flex items-center gap-1.5">
+                    <span>Hardware Drum:</span>
+                    <strong class="text-heading font-bold">FC-0{{ device.digitCount || 7 }}</strong>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- Column 2: Connected Instagram Accounts -->
+      <section class="card" aria-label="Connected Instagram Accounts">
+        <div class="card-header flex items-center justify-between pb-3 border-b border-subtle">
+          <div class="flex items-center gap-3">
+            <div class="panel-icon-wrap text-oxblood" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-base font-bold text-heading">Connected Instagram Accounts</h2>
+              <p class="text-xs text-muted">Official Creator & Business profiles via Meta Graph API</p>
+            </div>
+          </div>
+
+          <button (click)="connectInstagram()" class="btn btn-secondary btn-xs flex items-center gap-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Link Profile</span>
+          </button>
+        </div>
+
+        @if (accounts.length === 0) {
+          <!-- Empty State for Instagram Accounts -->
+          <div class="empty-terminal-state">
+            <div class="empty-symbol-ring">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </div>
+            <h3 class="font-bold text-heading text-sm mt-3">No Instagram Account Connected</h3>
+            <p class="text-xs text-muted mt-1 max-w-xs mx-auto">
+              Authorize your Creator or Business profile via official Instagram Graph API OAuth to feed physical counter reels.
+            </p>
+            <button (click)="connectInstagram()" class="btn btn-oxblood btn-sm mt-4">
+              Connect Instagram Profile
+            </button>
+          </div>
+        } @else {
+          <!-- Account List -->
+          <div class="account-profile-list flex flex-col gap-3 mt-4">
+            @for (acc of accounts; track acc.id) {
+              <div class="account-row-card p-4 rounded border border-subtle bg-surface hover:border-strong transition-all">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                  <!-- Avatar & Handle Info -->
+                  <div class="flex items-center gap-3">
+                    <div class="creator-monogram-circle" aria-hidden="true">
+                      <span class="monogram font-bold text-xs text-heading">&#64;</span>
+                    </div>
+
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="account-handle font-bold text-heading text-sm">&#64;{{ acc.username }}</span>
+                        <app-status-badge [status]="acc.connectionStatus"></app-status-badge>
+                      </div>
+                      <div class="text-xs text-muted mt-0.5 flex items-center gap-2 font-mono">
+                        <span class="text-heading font-bold">{{ acc.followerCount | number }}</span> followers
+                        <span class="text-dim">• Seq #{{ acc.followerSequence }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Actions -->
+                  <div class="account-actions flex items-center gap-2">
+                    @if (acc.connectionStatus === 'Disconnected' || acc.requiresReauthorization || acc.connectionStatus === 'ReauthorizationRequired') {
+                      <button
+                        type="button"
+                        (click)="connectInstagram()"
+                        class="btn btn-oxblood btn-xs flex items-center gap-1"
+                        title="Reconnect Instagram account authorization"
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                          <polyline points="23 4 23 10 17 10"></polyline>
+                          <polyline points="1 20 1 14 7 14"></polyline>
+                          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                        <span>Reconnect</span>
+                      </button>
+                    } @else {
+                      <button
+                        type="button"
+                        (click)="onRefreshFollowers(acc.id)"
+                        [disabled]="isRefreshing"
+                        class="btn btn-secondary btn-xs"
+                        title="Synchronize follower metrics"
+                      >
+                        Sync
+                      </button>
+                      <button
+                        type="button"
+                        (click)="onDisconnectAccount(acc.id)"
+                        class="btn btn-danger btn-xs"
+                        title="Disconnect profile from system"
+                      >
+                        Unlink
+                      </button>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </section>
+    </div>
+
+    <!-- Claim Hardware Counter Modal -->
+    @if (showClaimModal) {
+      <div class="modal-backdrop" (click)="closeClaimModal()" role="dialog" aria-modal="true" aria-labelledby="claimModalTitle">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-top flex items-center justify-between p-6 border-b border-subtle">
+            <div class="flex items-center gap-3">
+              <div class="modal-badge-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                  <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+              </div>
+              <div>
+                <h3 id="claimModalTitle" class="text-base font-bold text-heading">Pair Physical Counter</h3>
+                <p class="text-xs text-muted">Register an electro-mechanical hardware unit</p>
+              </div>
+            </div>
+            <button (click)="closeClaimModal()" class="btn-close" aria-label="Close dialog">✕</button>
+          </div>
+
+          <div class="p-6">
+            <!-- Hardware rear schematic preview -->
+            <div class="schematic-guide-box mb-5 p-4 rounded bg-surface-subtle border border-subtle flex items-center gap-4">
+              <div class="schematic-art" aria-hidden="true">
+                <svg width="76" height="48" viewBox="0 0 160 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="5" y="5" width="150" height="90" rx="6" fill="#fdfbf7" stroke="#dad3c4" stroke-width="2"/>
+                  <circle cx="15" cy="15" r="3" fill="#b88942"/>
+                  <circle cx="145" cy="15" r="3" fill="#b88942"/>
+                  <circle cx="15" cy="85" r="3" fill="#b88942"/>
+                  <circle cx="145" cy="85" r="3" fill="#b88942"/>
+                  <rect x="35" y="25" width="90" height="50" rx="4" fill="#f5f1e8" stroke="#782030" stroke-width="1.5" stroke-dasharray="3 3"/>
+                  <text x="80" y="46" fill="#782030" font-family="monospace" font-size="9" text-anchor="middle" font-weight="bold">SERIAL LABEL</text>
+                  <text x="80" y="62" fill="#78716c" font-family="monospace" font-size="8" text-anchor="middle">FC-A82F32</text>
+                </svg>
+              </div>
+              <div class="schematic-copy flex-1">
+                <h4 class="text-xs font-bold text-heading uppercase tracking-wider mb-1">Laser Serial Label</h4>
+                <p class="text-xs text-muted leading-relaxed">
+                  Locate the laser-etched metal label on the rear panel of your unit. Enter the Serial Number and the scratch-off claim code.
+                </p>
+              </div>
+            </div>
+
+            @if (claimErrorMessage) {
+              <div class="alert alert-danger mb-4 flex items-center gap-2" role="alert">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                </svg>
+                <span class="text-xs font-medium">{{ claimErrorMessage }}</span>
+              </div>
+            }
+
+            <form (ngSubmit)="onClaimSubmit()">
+              <div class="form-group mb-4">
+                <label class="form-label text-xs uppercase tracking-wider text-muted flex items-center justify-between" for="serialInput">
+                  <span>Serial Number</span>
+                  <span class="text-dim font-normal lowercase">From rear metal label</span>
+                </label>
+                <input
+                  type="text"
+                  id="serialInput"
+                  name="serial"
+                  [(ngModel)]="claimSerial"
+                  required
+                  placeholder="FC-A82F32"
+                  class="form-control font-mono tracking-widest text-sm"
+                />
+              </div>
+
+              <div class="form-group mb-6">
+                <label class="form-label text-xs uppercase tracking-wider text-muted flex items-center justify-between" for="claimCodeInput">
+                  <span>Security Claim Code</span>
+                  <span class="text-dim font-normal lowercase">From security envelope</span>
+                </label>
+                <input
+                  type="text"
+                  id="claimCodeInput"
+                  name="claimCode"
+                  [(ngModel)]="claimCode"
+                  required
+                  placeholder="CLM-82F3-2ABC-9999"
+                  class="form-control font-mono tracking-wider text-sm"
+                />
+              </div>
+
+              <div class="modal-footer-row flex items-center justify-between pt-4 border-t border-subtle">
+                <button
+                  type="button"
+                  (click)="fillTestClaim()"
+                  class="btn btn-secondary btn-xs flex items-center gap-1.5"
+                >
+                  <span class="text-oxblood font-bold">⚡</span>
+                  <span>Fill Demo (FC-A82F32)</span>
+                </button>
+
+                <div class="flex items-center gap-2">
+                  <button type="button" (click)="closeClaimModal()" class="btn btn-secondary btn-sm">
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    [disabled]="!claimSerial || !claimCode || isClaiming"
+                    class="btn btn-primary btn-sm flex items-center gap-2"
+                  >
+                    @if (isClaiming) {
+                      <span>Verifying...</span>
+                    } @else {
+                      <span>Verify & Pair Unit</span>
+                    }
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Edit Counter Nickname Modal -->
+    @if (showEditNicknameModal) {
+      <div class="modal-backdrop" (click)="closeEditNicknameModal()" role="dialog" aria-modal="true" aria-labelledby="nicknameModalTitle">
+        <div class="modal-content modal-content-sm" (click)="$event.stopPropagation()">
+          <div class="modal-top flex items-center justify-between p-6 border-b border-subtle">
+            <div class="flex items-center gap-3">
+              <div class="modal-badge-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 id="nicknameModalTitle" class="text-base font-bold text-heading">Display Nickname</h3>
+                <p class="text-xs text-muted">Set a friendly location label for this unit</p>
+              </div>
+            </div>
+            <button (click)="closeEditNicknameModal()" class="btn-close" aria-label="Close dialog">✕</button>
+          </div>
+
+          <div class="p-6">
+            <form (ngSubmit)="onNicknameSubmit()">
+              <div class="form-group mb-6">
+                <label class="form-label text-xs uppercase tracking-wider text-muted flex items-center justify-between" for="nicknameField">
+                  <span>Display Name</span>
+                  <span class="text-dim font-normal lowercase">Max 50 chars</span>
+                </label>
+                <input
+                  id="nicknameField"
+                  type="text"
+                  name="nickname"
+                  [(ngModel)]="editNicknameValue"
+                  placeholder="e.g. Flagship Storefront Window"
+                  class="form-control text-sm font-medium"
+                  maxlength="50"
+                />
+                <p class="text-xs text-dim mt-2 leading-relaxed">
+                  Leave empty to revert back to the hardware serial number.
+                </p>
+              </div>
+
+              <div class="modal-footer-row flex items-center justify-end gap-2 pt-4 border-t border-subtle">
+                <button type="button" (click)="closeEditNicknameModal()" class="btn btn-secondary btn-sm">
+                  Cancel
+                </button>
+                <button type="submit" [disabled]="isSavingNickname" class="btn btn-primary btn-sm flex items-center gap-2">
+                  @if (isSavingNickname) {
+                    <span>Saving...</span>
+                  } @else {
+                    <span>Save Nickname</span>
+                  }
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Confirm Feed Reassignment Modal -->
+    @if (showBindConfirmModal) {
+      <div class="modal-backdrop" (click)="cancelBind()" role="dialog" aria-modal="true" aria-labelledby="confirmBindTitle">
+        <div class="modal-content modal-content-sm" (click)="$event.stopPropagation()">
+          <div class="modal-top flex items-center justify-between p-6 border-b border-subtle">
+            <div class="flex items-center gap-3">
+              <div class="modal-badge-icon badge-icon-warning" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+              </div>
+              <div>
+                <h3 id="confirmBindTitle" class="text-base font-bold text-heading">Confirm Action</h3>
+                <p class="text-xs text-muted">Update active counter feed</p>
+              </div>
+            </div>
+            <button (click)="cancelBind()" class="btn-close" aria-label="Close dialog">✕</button>
+          </div>
+
+          <div class="p-6">
+            <p class="text-sm text-heading font-medium leading-relaxed mb-6">
+              {{ bindConfirmMessage }}
+            </p>
+
+            <div class="modal-footer-row flex items-center justify-end gap-2 pt-4 border-t border-subtle">
+              <button type="button" (click)="cancelBind()" class="btn btn-secondary btn-sm">
+                Cancel
+              </button>
+              <button type="button" (click)="confirmBind()" class="btn btn-oxblood btn-sm">
+                Confirm Reassignment
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,580 @@
+<div class="fleet-page">
+  <div class="container">
+    <!-- Toast Notification -->
+    @if (toastMessage) {
+      <div class="toast-alert" [ngClass]="toastClass" role="alert">
+        <span class="toast-icon">{{ toastIcon }}</span>
+        <div class="toast-content flex-1">
+          <span class="font-bold text-heading">{{ toastTitle }}:</span>
+          <span class="text-sm ml-1">{{ toastMessage }}</span>
+        </div>
+        <button type="button" (click)="dismissToast()" class="toast-close" aria-label="Close notification">✕</button>
+      </div>
+    }
+
+    <!-- Horizon Operations Header -->
+    <div class="fleet-horizon-bar mb-6">
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <div class="horizon-brand-area">
+          <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+            <span class="telemetry-live-pill font-mono">
+              <span class="live-dot" [class.is-degraded]="health && health.status !== 'Healthy'"></span>
+              {{ (health?.status === 'Healthy' ? 'FLEET OPERATIONAL' : 'SYSTEM DEGRADED') }}
+            </span>
+            <span class="telemetry-sub-badge font-mono">ESP32 GATEWAY & WORKERS</span>
+            @if (health?.serverTime) {
+              <span class="telemetry-time-badge font-mono">
+                UTC: {{ health?.serverTime | date:'HH:mm:ss' }}
+              </span>
+            }
+          </div>
+          <h1 class="fleet-title font-heading">Hardware Fleet & Telemetry Center</h1>
+          <p class="fleet-subtitle text-sm">
+            Live operational telemetry for electro-mechanical split-flap displays, Meta Graph API OAuth tokens, and background worker queues.
+          </p>
+        </div>
+
+        <!-- Quick Action Controls -->
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <button
+            type="button"
+            (click)="simulateFollowerSurge(100)"
+            [disabled]="isSurging"
+            class="btn btn-secondary btn-sm flex items-center gap-2"
+            title="Simulate follower count increment (+100) to test mechanical flap rotation"
+          >
+            <span>⚡</span>
+            <span>{{ isSurging ? 'Simulating...' : 'Test Surge (+100)' }}</span>
+          </button>
+
+          <button
+            type="button"
+            (click)="refreshAll()"
+            [disabled]="isLoading"
+            class="btn btn-primary btn-sm flex items-center gap-2"
+            title="Refresh live telemetry, connected devices, and Instagram pipes"
+          >
+            <span class="refresh-spinner" [class.spinning]="isLoading">🔄</span>
+            <span>{{ isLoading ? 'Refreshing...' : 'Refresh Telemetry' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    @if (health) {
+      <!-- 5-Tile Key Metrics Command Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+        <!-- Tile 1: System Status -->
+        <div class="card metric-tile">
+          <div class="metric-header flex items-center justify-between">
+            <span class="metric-label font-mono">CORE GATEWAY</span>
+            <span class="status-pulse-dot" [class.is-healthy]="health.status === 'Healthy'"></span>
+          </div>
+          <div class="metric-value-row flex items-baseline gap-2 mt-2">
+            <span class="metric-value font-mono">{{ health.status }}</span>
+          </div>
+          <div class="metric-footer mt-2">
+            <span class="metric-subtext text-xs text-muted">PostgreSQL & State Cache OK</span>
+          </div>
+        </div>
+
+        <!-- Tile 2: Active Counters -->
+        <div class="card metric-tile">
+          <div class="metric-header flex items-center justify-between">
+            <span class="metric-label font-mono">ACTIVE COUNTERS</span>
+            <span class="metric-tag font-mono">HARDWARE</span>
+          </div>
+          <div class="metric-value-row flex items-baseline gap-2 mt-2">
+            <span class="metric-value font-mono">{{ health.totalActiveDevices }}</span>
+            <span class="metric-unit font-mono text-xs text-muted">units</span>
+          </div>
+          <div class="metric-footer mt-2 flex items-center justify-between">
+            <span class="metric-subtext text-xs text-muted">5 & 7-Digit split-flap drums</span>
+          </div>
+        </div>
+
+        <!-- Tile 3: Connected Creators -->
+        <div class="card metric-tile">
+          <div class="metric-header flex items-center justify-between">
+            <span class="metric-label font-mono">CONNECTED CREATORS</span>
+            <span class="metric-tag font-mono ig-tag">GRAPH API</span>
+          </div>
+          <div class="metric-value-row flex items-baseline gap-2 mt-2">
+            <span class="metric-value font-mono">{{ health.totalConnectedInstagramAccounts }}</span>
+            <span class="metric-unit font-mono text-xs text-muted">feeds</span>
+          </div>
+          <div class="metric-footer mt-2">
+            <span class="metric-subtext text-xs text-muted">Professional Creator/Business</span>
+          </div>
+        </div>
+
+        <!-- Tile 4: Token Health -->
+        <div class="card metric-tile" [class.has-issue]="health.accountsRequiringReauth > 0 || health.rateLimitedAccounts > 0">
+          <div class="metric-header flex items-center justify-between">
+            <span class="metric-label font-mono">TOKEN HEALTH</span>
+            @if (health.accountsRequiringReauth > 0 || health.rateLimitedAccounts > 0) {
+              <span class="badge badge-warning font-mono text-xs">ATTN</span>
+            } @else {
+              <span class="badge badge-success font-mono text-xs">PRISTINE</span>
+            }
+          </div>
+          <div class="metric-value-row flex items-baseline gap-2 mt-2">
+            <span class="metric-value font-mono" [class.text-danger]="health.accountsRequiringReauth > 0">
+              {{ health.accountsRequiringReauth }}
+            </span>
+            <span class="metric-unit font-mono text-xs text-muted">reauths</span>
+          </div>
+          <div class="metric-footer mt-2">
+            <span class="metric-subtext text-xs text-muted">
+              {{ health.rateLimitedAccounts > 0 ? (health.rateLimitedAccounts + ' rate limited') : '60-day auto-rotation active' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Tile 5: Registered Customers -->
+        <div class="card metric-tile">
+          <div class="metric-header flex items-center justify-between">
+            <span class="metric-label font-mono">REGISTERED USERS</span>
+            <span class="metric-tag font-mono">AUTH</span>
+          </div>
+          <div class="metric-value-row flex items-baseline gap-2 mt-2">
+            <span class="metric-value font-mono">{{ health.totalUsers }}</span>
+            <span class="metric-unit font-mono text-xs text-muted">users</span>
+          </div>
+          <div class="metric-footer mt-2">
+            <span class="metric-subtext text-xs text-muted">Platform accounts mapped</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segmented Navigation Tabs -->
+      <div class="fleet-tabs-nav flex items-center gap-2 mb-6">
+        <button
+          type="button"
+          (click)="activeTab = 'telemetry'"
+          class="fleet-tab-btn"
+          [class.active]="activeTab === 'telemetry'"
+        >
+          <span class="tab-icon">🖥️</span>
+          <span>Architecture & Subsystems</span>
+        </button>
+
+        <button
+          type="button"
+          (click)="activeTab = 'devices'"
+          class="fleet-tab-btn"
+          [class.active]="activeTab === 'devices'"
+        >
+          <span class="tab-icon">📟</span>
+          <span>Hardware Fleet ({{ devices.length }})</span>
+        </button>
+
+        <button
+          type="button"
+          (click)="activeTab = 'pipeline'"
+          class="fleet-tab-btn"
+          [class.active]="activeTab === 'pipeline'"
+        >
+          <span class="tab-icon">📡</span>
+          <span>Meta Graph API Pipeline ({{ connections.length }})</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: ARCHITECTURE & SUBSYSTEMS -->
+      @if (activeTab === 'telemetry') {
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6 animate-fade-in">
+          <!-- Subsystem 1: Meta Graph API Pipeline -->
+          <div class="card subsystem-card">
+            <div class="flex items-center justify-between pb-3 border-b border-subtle mb-4">
+              <div class="flex items-center gap-2.5">
+                <div class="subsystem-icon-box ig-gradient-box">
+                  <svg viewBox="0 0 24 24" fill="none" class="subsystem-svg">
+                    <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" stroke="white" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="4.2" stroke="white" stroke-width="2"/>
+                    <circle cx="17.2" cy="6.8" r="1.2" fill="white"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-base font-bold text-heading">Meta Graph API Pipeline</h3>
+                  <span class="text-xs text-muted font-mono">INSTAGRAM API WITH INSTAGRAM LOGIN</span>
+                </div>
+              </div>
+              <span class="badge badge-success font-mono">OPERATIONAL</span>
+            </div>
+
+            <div class="subsystem-spec-grid">
+              <div class="spec-item">
+                <span class="spec-label font-mono">API ENDPOINT</span>
+                <span class="spec-val font-mono">graph.instagram.com/me</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">PERMISSION SCOPE</span>
+                <span class="spec-val font-mono">instagram_business_basic</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">RATE LIMIT BUDGET</span>
+                <span class="spec-val font-mono">200 req / user / hr</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">TOKEN VAULT ENCRYPTION</span>
+                <span class="spec-val font-mono">AES-256-GCM Secure Key</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">TOKEN ROTATION CADENCE</span>
+                <span class="spec-val font-mono">Every 60 days (Auto-refreshed)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">IPV6 FALLBACK GATEWAY</span>
+                <span class="spec-val font-mono">IPv4 Enforced (59ms latency)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subsystem 2: Hardware Polling Gateway -->
+          <div class="card subsystem-card">
+            <div class="flex items-center justify-between pb-3 border-b border-subtle mb-4">
+              <div class="flex items-center gap-2.5">
+                <div class="subsystem-icon-box brass-box">
+                  <span class="text-lg">⚙️</span>
+                </div>
+                <div>
+                  <h3 class="text-base font-bold text-heading">Hardware Polling Gateway</h3>
+                  <span class="text-xs text-muted font-mono">ZERO-OVERHEAD ESP32 STATE CACHE</span>
+                </div>
+              </div>
+              <span class="badge badge-success font-mono">100% UPTIME</span>
+            </div>
+
+            <div class="subsystem-spec-grid">
+              <div class="spec-item">
+                <span class="spec-label font-mono">DEVICE INGRESS ROUTE</span>
+                <span class="spec-val font-mono">GET /device/v1/state</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">HARDWARE AUTHENTICATION</span>
+                <span class="spec-val font-mono">X-Device-Secret (Hashed ROM Key)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">DEVICE POLLING CADENCE</span>
+                <span class="spec-val font-mono">30s with randomized jitter</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">CACHE ISOLATION</span>
+                <span class="spec-val font-mono">Zero direct calls from ESP32 to Meta</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">RESPONSE PAYLOAD</span>
+                <span class="spec-val font-mono">Digit array, target integer, seq</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">AVERAGE RESPONSE TIME</span>
+                <span class="spec-val font-mono">&lt; 15ms cached latency</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subsystem 3: PostgreSQL Data & Follower Ledger -->
+          <div class="card subsystem-card">
+            <div class="flex items-center justify-between pb-3 border-b border-subtle mb-4">
+              <div class="flex items-center gap-2.5">
+                <div class="subsystem-icon-box slate-box">
+                  <span class="text-lg">🗄️</span>
+                </div>
+                <div>
+                  <h3 class="text-base font-bold text-heading">PostgreSQL Follower Ledger</h3>
+                  <span class="text-xs text-muted font-mono">ACID AUDIT & SEQUENCE STORE</span>
+                </div>
+              </div>
+              <span class="badge badge-success font-mono">SYNCHRONIZED</span>
+            </div>
+
+            <div class="subsystem-spec-grid">
+              <div class="spec-item">
+                <span class="spec-label font-mono">FOLLOWER SEQUENCE REVISION</span>
+                <span class="spec-val font-mono">Monotonically strictly increasing</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">HISTORICAL AUDIT LOGGING</span>
+                <span class="spec-val font-mono">Active (Timestamp, Delta, Count)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">HARDWARE CLAIM REGISTRY</span>
+                <span class="spec-val font-mono">Single-use Cryptographic Codes</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">DEVICE CLAIM EXPIRY</span>
+                <span class="spec-val font-mono">30-day unboxing expiration window</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subsystem 4: Electro-Mechanical Flap Dispatcher -->
+          <div class="card subsystem-card">
+            <div class="flex items-center justify-between pb-3 border-b border-subtle mb-4">
+              <div class="flex items-center gap-2.5">
+                <div class="subsystem-icon-box amber-box">
+                  <span class="text-lg">🎛️</span>
+                </div>
+                <div>
+                  <h3 class="text-base font-bold text-heading">Electro-Mechanical Flap Engine</h3>
+                  <span class="text-xs text-muted font-mono">STEPPER MOTOR DRIVER TELEMETRY</span>
+                </div>
+              </div>
+              <span class="badge badge-success font-mono">CALIBRATED</span>
+            </div>
+
+            <div class="subsystem-spec-grid">
+              <div class="spec-item">
+                <span class="spec-label font-mono">SUPPORTED DRUM FORMATS</span>
+                <span class="spec-val font-mono">5 Digits (Desk) / 7 Digits (Display)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">DIFFERENTIAL FLIP LOGIC</span>
+                <span class="spec-val font-mono">Only modified digit reels rotate</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">VIRAL SURGE PROTECTION</span>
+                <span class="spec-val font-mono">Jitter buffer prevents motor overheat</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label font-mono">DISPLAY SLEEP CYCLES</span>
+                <span class="spec-val font-mono">Low-power quiet hours supported</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- TAB 2: LIVE HARDWARE FLEET -->
+      @if (activeTab === 'devices') {
+        <div class="card mb-6 animate-fade-in">
+          <div class="flex items-center justify-between flex-wrap gap-3 pb-4 border-b border-subtle mb-4">
+            <div>
+              <h2 class="text-lg font-extrabold text-heading">Physical Hardware Fleet Units</h2>
+              <p class="text-xs text-muted">All provisioned, claimed, and active display counters</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex items-center gap-2 flex-wrap">
+              <div class="search-box">
+                <input
+                  type="text"
+                  [(ngModel)]="deviceSearch"
+                  (input)="filterDevices()"
+                  placeholder="Filter by serial or owner..."
+                  class="form-control form-control-sm font-mono text-xs"
+                />
+              </div>
+
+              <select
+                [(ngModel)]="deviceStatusFilter"
+                (change)="filterDevices()"
+                class="form-control form-control-sm text-xs custom-select-sm"
+              >
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Unclaimed">Unclaimed</option>
+                <option value="Manufactured">Manufactured</option>
+                <option value="Disabled">Disabled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Hardware Serial</th>
+                  <th>Display Drum</th>
+                  <th>Fleet Status</th>
+                  <th>Assigned Owner</th>
+                  <th>Firmware ROM</th>
+                  <th>Last Heartbeat</th>
+                  <th class="text-right">Operations</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (device of filteredDevices; track device.id) {
+                  <tr>
+                    <td>
+                      <div class="flex items-center gap-2">
+                        <span class="font-mono font-bold text-heading text-xs serial-tag">{{ device.serialNumber }}</span>
+                        <button
+                          type="button"
+                          (click)="copyToClipboard(device.serialNumber, 'Serial Number')"
+                          class="btn-copy-sm"
+                          title="Copy serial number"
+                        >
+                          📋
+                        </button>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="badge badge-neutral font-mono text-xs">
+                        {{ device.digitCount }}-DIGIT FLAP
+                      </span>
+                    </td>
+                    <td>
+                      <app-status-badge [status]="device.status"></app-status-badge>
+                    </td>
+                    <td>
+                      @if (device.ownerEmail) {
+                        <span class="font-mono text-xs text-heading">{{ device.ownerEmail }}</span>
+                      } @else {
+                        <span class="text-xs text-dim italic">Unclaimed (Packaging)</span>
+                      }
+                    </td>
+                    <td>
+                      <span class="font-mono text-xs text-muted chip-firmware">
+                        {{ device.firmwareVersion || 'v1.4.2-esp32' }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="text-xs text-muted font-mono">
+                        {{ device.lastSeenAt ? (device.lastSeenAt | date:'shortTime') : 'Never polled' }}
+                      </span>
+                    </td>
+                    <td class="text-right">
+                      <div class="flex items-center justify-end gap-1.5">
+                        <button
+                          type="button"
+                          (click)="onResetClaim(device)"
+                          class="btn btn-secondary btn-xs"
+                          title="Reset unboxing claim code"
+                        >
+                          Reset Claim
+                        </button>
+                        @if (device.status === 'Active') {
+                          <button
+                            type="button"
+                            (click)="onDisableDevice(device)"
+                            class="btn btn-danger btn-xs"
+                            title="Temporarily suspend device gateway access"
+                          >
+                            Disable
+                          </button>
+                        }
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="7" class="text-center py-8 text-muted">
+                      <div class="flex flex-col items-center gap-2">
+                        <span class="text-2xl">📟</span>
+                        <span class="text-sm font-semibold">No hardware counter units match your filter criteria.</span>
+                        <span class="text-xs text-dim">Provision new hardware in the Factory Provisioning stage.</span>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+
+      <!-- TAB 3: META GRAPH API PIPELINE -->
+      @if (activeTab === 'pipeline') {
+        <div class="card mb-6 animate-fade-in">
+          <div class="flex items-center justify-between flex-wrap gap-3 pb-4 border-b border-subtle mb-4">
+            <div>
+              <h2 class="text-lg font-extrabold text-heading">Instagram Creator Connections Pipeline</h2>
+              <p class="text-xs text-muted">Live synchronization status, token health, and API error tracking</p>
+            </div>
+
+            <div class="search-box">
+              <input
+                type="text"
+                [(ngModel)]="connectionSearch"
+                (input)="filterConnections()"
+                placeholder="Filter by @username or email..."
+                class="form-control form-control-sm font-mono text-xs"
+              />
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Instagram Profile</th>
+                  <th>Account Type</th>
+                  <th>Live Followers</th>
+                  <th>Connection Status</th>
+                  <th>Sync Revision</th>
+                  <th>Last Follower Sync</th>
+                  <th>Token Refresh Health</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (conn of filteredConnections; track conn.id) {
+                  <tr>
+                    <td>
+                      <div class="flex items-center gap-2.5">
+                        <div class="ig-avatar-mini">
+                          <svg viewBox="0 0 24 24" fill="none" class="ig-mini-svg">
+                            <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" stroke="white" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="4.2" stroke="white" stroke-width="2"/>
+                            <circle cx="17.2" cy="6.8" r="1.2" fill="white"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <div class="font-bold text-heading text-sm">&#64;{{ conn.username }}</div>
+                          <div class="text-xs text-muted font-mono">{{ conn.ownerEmail }}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="badge badge-neutral font-mono text-xs">
+                        {{ conn.accountType || 'CREATOR' }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="font-mono font-extrabold text-heading text-base">
+                        {{ conn.followerCount !== undefined ? (conn.followerCount | number) : '—' }}
+                      </span>
+                    </td>
+                    <td>
+                      <app-status-badge [status]="conn.connectionStatus"></app-status-badge>
+                    </td>
+                    <td>
+                      <span class="font-mono text-xs text-muted">
+                        Seq #{{ conn.followerSequence }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="text-xs text-muted font-mono">
+                        {{ conn.lastFollowerRefreshAt ? (conn.lastFollowerRefreshAt | date:'medium') : 'Pending sync' }}
+                      </span>
+                    </td>
+                    <td>
+                      @if (conn.tokenRefreshFailureCount > 0 || conn.requiresReauthorization) {
+                        <div class="flex items-center gap-1.5">
+                          <span class="badge badge-danger font-mono text-xs">REAUTH NEEDED</span>
+                          <span class="text-xs text-danger font-mono">({{ conn.tokenRefreshFailureCount }} errors)</span>
+                        </div>
+                      } @else {
+                        <span class="badge badge-success font-mono text-xs">0 FAILURES</span>
+                      }
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="7" class="text-center py-8 text-muted">
+                      <div class="flex flex-col items-center gap-2">
+                        <span class="text-2xl">📸</span>
+                        <span class="text-sm font-semibold">No Instagram Creator feeds found.</span>
+                        <span class="text-xs text-dim">When customers link their Creator or Business accounts, they will appear here.</span>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>
