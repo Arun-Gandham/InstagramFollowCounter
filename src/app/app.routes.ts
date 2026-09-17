@@ -7,7 +7,8 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'dashboard'
+    loadComponent: () =>
+      import('./public/product-page/product-page.component').then((m) => m.ProductPageComponent)
   },
   {
     path: 'login',

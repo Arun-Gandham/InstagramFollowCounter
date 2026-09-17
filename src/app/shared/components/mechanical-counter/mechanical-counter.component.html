@@ -1,0 +1,139 @@
+<div class="counter-presentation-wrapper" [class.surface-plinth]="surfaceType === 'plinth'" [class.surface-desk]="surfaceType === 'desk'">
+  <!-- Floating Selector Controls (Variant & Theme Options) -->
+  @if (showControls) {
+    <div class="floating-controls-panel flex items-center justify-center mb-6" role="toolbar" aria-label="Counter configuration options">
+      <!-- Digits & Theme Actions -->
+      <div class="floating-actions-pill flex items-center p-1" role="group" aria-label="Variant options">
+        <button
+          type="button"
+          (click)="selectDigitCount(5)"
+          class="variant-btn"
+          [class.active]="digitCount === 5"
+          [attr.aria-checked]="digitCount === 5"
+          role="radio"
+        >
+          5 digits
+        </button>
+
+        <button
+          type="button"
+          (click)="selectDigitCount(7)"
+          class="variant-btn"
+          [class.active]="digitCount === 7"
+          [attr.aria-checked]="digitCount === 7"
+          role="radio"
+        >
+          7 digits
+        </button>
+
+        <!-- Smooth Theme Switcher -->
+        <button
+          type="button"
+          (click)="cycleTheme()"
+          class="theme-toggle-btn"
+          title="Switch counter design finish (Sunset Wood / Classic Charcoal / Artisan Ivory)"
+          aria-label="Switch counter theme"
+        >
+          @if (theme === 'sunset-wood') {
+            <span class="theme-icon">🌅</span>
+            <span class="theme-label">Sunset Wood</span>
+          } @else if (theme === 'classic-charcoal') {
+            <span class="theme-icon">🖤</span>
+            <span class="theme-label">Charcoal</span>
+          } @else {
+            <span class="theme-icon">🏛️</span>
+            <span class="theme-label">Artisan Ivory</span>
+          }
+        </button>
+
+        <button
+          type="button"
+          (click)="onActionClick()"
+          class="buy-cta-btn flex items-center gap-1 font-bold"
+        >
+          <span>Buy</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Counter Physical Showcase Stage -->
+  <div class="counter-chassis-stage">
+    <!-- SVG Gradient Definitions for Instagram Logo -->
+    <svg width="0" height="0" class="svg-defs" aria-hidden="true">
+      <defs>
+        <linearGradient id="igSunsetCamera" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#f58529"/>
+          <stop offset="45%" stop-color="#dd2a7b"/>
+          <stop offset="100%" stop-color="#8134af"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <!-- Outer Physical Enclosure Chassis -->
+    <div
+      class="chassis-body"
+      [ngClass]="'theme-' + theme"
+      [class.chassis-5]="digitCount === 5"
+      [class.chassis-7]="digitCount === 7"
+      aria-hidden="true"
+    >
+      <!-- Left Real Instagram Logo Panel (Prominent, clean square) -->
+      <div class="chassis-logo-plate" title="Instagram Follower Counter" aria-label="Instagram">
+        <div class="ig-symbol-tile">
+          <svg viewBox="0 0 24 24" fill="none" class="ig-camera-glyph">
+            <rect x="2" y="2" width="20" height="20" rx="5.8" stroke="url(#igSunsetCamera)" stroke-width="2.3"/>
+            <circle cx="12" cy="12" r="4.6" stroke="url(#igSunsetCamera)" stroke-width="2.3"/>
+            <circle cx="17.4" cy="6.6" r="1.35" fill="url(#igSunsetCamera)"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Recessed Optical Split-Flap Window -->
+      <div class="recessed-chamber">
+        <div class="chamber-glass-glare"></div>
+
+        <!-- Digit Reel Units -->
+        <div class="digit-drums-container">
+          @for (d of displayDigits; track $index) {
+            <div
+              class="split-flap-unit"
+              [class.flipping]="d.isFlipping"
+              [class.blank-leaf]="!d.current"
+              [attr.data-digit]="d.current"
+            >
+              <!-- Background Upper Half (Shows the NEW digit) -->
+              <div class="flap-half flap-top static-top">
+                <span class="digit-num font-mono">{{ d.current }}</span>
+              </div>
+
+              <!-- Background Lower Half (Shows the OLD digit until flip completes) -->
+              <div class="flap-half flap-bottom static-bottom">
+                <span class="digit-num font-mono">{{ d.isFlipping ? d.previous : d.current }}</span>
+              </div>
+
+              <!-- Animated Folding Leaf: Upper leaf flips down showing OLD digit -->
+              <div class="flap-half flap-top fold-top">
+                <span class="digit-num font-mono">{{ d.previous }}</span>
+              </div>
+
+              <!-- Animated Folding Leaf: Lower leaf unfolds down showing NEW digit -->
+              <div class="flap-half flap-bottom fold-bottom">
+                <span class="digit-num font-mono">{{ d.current }}</span>
+              </div>
+
+              <!-- Center Mechanical Separation Hinge Line -->
+              <div class="hinge-slit"></div>
+              <div class="hinge-pin pin-left"></div>
+              <div class="hinge-pin pin-right"></div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Soft Diffused Studio Shadow -->
+    <div class="counter-contact-shadow" [class.shadow-5]="digitCount === 5" [class.shadow-7]="digitCount === 7"></div>
+  </div>
+</div>

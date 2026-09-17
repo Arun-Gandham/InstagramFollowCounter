@@ -1,0 +1,77 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container-fluid">
+    <!-- Top Main Content: Brand & Navigation Columns Side-by-Side -->
+    <div class="footer-main">
+      <!-- Left Side: Brand Identity & Summary -->
+      <div class="footer-brand-side">
+        <a routerLink="/" class="brand-link">
+          <div class="footer-logo-box">
+            <svg viewBox="0 0 24 24" fill="none" class="footer-logo-svg">
+              <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="white" stroke-width="2"/>
+              <circle cx="12" cy="12" r="4.2" stroke="white" stroke-width="2"/>
+              <circle cx="17.2" cy="6.8" r="1.2" fill="white"/>
+            </svg>
+          </div>
+          <div>
+            <span class="font-heading font-extrabold text-heading text-lg">
+              Flip<span class="footer-accent">Social</span>
+            </span>
+          </div>
+        </a>
+        <p class="text-sm text-muted footer-desc">
+          Electro-mechanical split-flap displays bringing live Instagram community growth into physical venues, retail counters, and creative studios.
+        </p>
+        <div class="hardware-spec-tag font-mono text-xs">
+          ESP32 WI-FI • 5V USB-C • REAL-TIME SPLIT-FLAP
+        </div>
+      </div>
+
+      <!-- Right Side: Navigation Columns Side-by-Side -->
+      <div class="footer-nav-side">
+        <!-- Column 1: Products -->
+        <div class="footer-nav-col">
+          <h4 class="footer-heading font-heading">Product</h4>
+          <ul class="footer-links-list">
+            <li><button type="button" (click)="scrollToSection('products')" class="footer-link">5-Digit Compact</button></li>
+            <li><button type="button" (click)="scrollToSection('products')" class="footer-link">7-Digit Flagship</button></li>
+            <li><button type="button" (click)="scrollToSection('craftsmanship')" class="footer-link">Split-Flap Reels</button></li>
+            <li><button type="button" (click)="scrollToSection('specifications')" class="footer-link">Specifications</button></li>
+          </ul>
+        </div>
+
+        <!-- Column 2: Setup & Architecture -->
+        <div class="footer-nav-col">
+          <h4 class="footer-heading font-heading">Architecture</h4>
+          <ul class="footer-links-list">
+            <li><button type="button" (click)="scrollToSection('how-it-works')" class="footer-link">How Setup Works</button></li>
+            <li><button type="button" (click)="scrollToSection('why-business')" class="footer-link">For Business</button></li>
+            <li><button type="button" (click)="scrollToSection('faq')" class="footer-link">Graph API Security</button></li>
+            <li><button type="button" (click)="scrollToSection('faq')" class="footer-link">Wi-Fi Pairing</button></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Portals & Access -->
+        <div class="footer-nav-col">
+          <h4 class="footer-heading font-heading">Access</h4>
+          <ul class="footer-links-list">
+            <li><a routerLink="/login" class="footer-link">Customer Console</a></li>
+            <li><a routerLink="/dashboard" class="footer-link">Live Display Hub</a></li>
+            <li><button type="button" (click)="scrollToSection('get-yours')" class="footer-link">Order Inquiries</button></li>
+            <li><button type="button" (click)="scrollToSection('faq')" class="footer-link">Help & FAQs</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Attribution & Disclaimer Side-by-Side -->
+    <div class="footer-bottom">
+      <div class="text-xs text-muted">
+        &copy; {{ currentYear }} FlipSocial Hardware Systems. All rights reserved.
+      </div>
+
+      <div class="disclaimer-note text-xs text-dim">
+        Instagram is a registered trademark of Meta Platforms, Inc. This product connects via the official Meta Graph API.
+      </div>
+    </div>
+  </div>
+</footer>

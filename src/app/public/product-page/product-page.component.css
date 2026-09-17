@@ -1,0 +1,666 @@
+/* ==========================================================================
+   Public Product Landing Page Styles
+   Aesthetic: Warm Ivory, Ink Slate, Antique Brass & Soft Instagram Sunset
+   ========================================================================== */
+
+.product-landing-page {
+  background-color: var(--bg-canvas);
+  color: var(--text-body);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* --------------------------------------------------------------------------
+   Hero Section & Ambient Plinth Stage
+   -------------------------------------------------------------------------- */
+.hero-section {
+  padding-top: 4rem;
+  padding-bottom: 5.5rem;
+  position: relative;
+  text-align: center;
+}
+
+.hero-header-content {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.hero-title {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(2.4rem, 5.2vw, 3.85rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: #111827;
+  text-align: center;
+  margin: 0 auto 1.25rem auto;
+  max-width: 840px;
+  text-wrap: balance;
+}
+
+.hero-subtitle {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 450;
+  color: #4b5563;
+  max-width: 660px;
+  line-height: 1.65;
+  letter-spacing: -0.015em;
+  text-align: center;
+  margin: 0 auto;
+  text-wrap: pretty;
+}
+
+.btn-lg {
+  font-size: 0.95rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-full);
+}
+
+.replay-spin {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.btn-secondary:hover .replay-spin {
+  transform: rotate(-90deg);
+}
+
+.hero-counter-stage {
+  position: relative;
+  margin-top: 2.25rem; /* Balanced space between subtitle and options pill */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.tabletop-stage-container {
+  position: relative;
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Desk Accessories & Counter Baseline Row */
+.tabletop-items-row {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14px;
+  padding: 0 16px;
+  margin-bottom: -32px;
+}
+
+/* Base Desk Prop Styling */
+.desk-prop {
+  position: relative;
+  flex-shrink: 0;
+  pointer-events: none;
+  user-select: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.prop-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.prop-magazines {
+  width: 170px;
+  height: 115px;
+  margin-bottom: 4px;
+}
+
+.prop-coffee {
+  width: 60px;
+  height: 96px;
+  margin-bottom: 4px;
+}
+
+.counter-display-wrapper {
+  position: relative;
+  z-index: 4;
+  flex-shrink: 0;
+}
+
+.prop-pencil-cup {
+  width: 65px;
+  height: 110px;
+  margin-bottom: 4px;
+}
+
+.prop-stationery-cluster {
+  width: 170px;
+  height: 85px;
+  margin-bottom: 12px;
+}
+
+/* Fluted Architectural Console Pedestal (Reference Table Scene) */
+.fluted-pedestal-console {
+  width: 100%;
+  max-width: 1140px;
+  position: relative;
+  z-index: 1;
+}
+
+.console-table-surface {
+  height: 64px;
+  border-radius: 9999px / 36px;
+  background: linear-gradient(180deg, #f7f2ea 0%, #eee6d9 55%, #dfd5c3 100%);
+  border: 1px solid #dcd1be;
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.95),
+    inset 0 -3px 6px rgba(110, 95, 75, 0.16),
+    0 4px 10px rgba(45, 35, 25, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.stone-bevel-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: linear-gradient(90deg, transparent 4%, rgba(255, 255, 255, 0.95) 20%, rgba(255, 255, 255, 0.95) 80%, transparent 96%);
+}
+
+.console-fluted-skirt {
+  height: 140px;
+  width: calc(100% - 14px);
+  margin: -26px auto 0;
+  border-bottom-left-radius: 64px;
+  border-bottom-right-radius: 64px;
+  border: 1px solid #d5cabd;
+  border-top: none;
+  background: repeating-linear-gradient(
+    90deg,
+    #faf6ef 0px,
+    #f5ede1 3px,
+    #ebd8c3 7px,
+    #dec8af 11px,
+    #c4af96 15px,
+    #b29e85 16.5px,
+    #faf6ef 17px
+  );
+  box-shadow:
+    inset 0 8px 16px rgba(45, 35, 25, 0.12),
+    0 24px 48px -12px rgba(35, 25, 15, 0.16);
+  position: relative;
+  overflow: hidden;
+}
+
+.console-fluted-skirt::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-bottom-left-radius: 64px;
+  border-bottom-right-radius: 64px;
+  background:
+    linear-gradient(180deg, rgba(65, 45, 28, 0.38) 0%, rgba(65, 45, 28, 0.12) 14%, transparent 35%),
+    linear-gradient(90deg, rgba(45, 30, 15, 0.32) 0%, rgba(45, 30, 15, 0.06) 9%, transparent 22%, transparent 78%, rgba(45, 30, 15, 0.06) 91%, rgba(45, 30, 15, 0.32) 100%);
+  pointer-events: none;
+}
+
+.console-ground-shadow {
+  height: 32px;
+  width: 88%;
+  margin: -8px auto 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(45, 30, 15, 0.28) 0%, rgba(45, 30, 15, 0.1) 50%, transparent 75%);
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+.plinth-ambient-glow {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 980px;
+  height: 360px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(245, 133, 41, 0.12) 0%, rgba(221, 42, 123, 0.06) 45%, transparent 75%);
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Tablet & Mobile Breakpoints for Realistic Table Props */
+@media (max-width: 1140px) {
+  .tabletop-items-row {
+    gap: 10px;
+    padding: 0 8px;
+  }
+  .prop-magazines {
+    width: 145px;
+    height: 98px;
+  }
+  .prop-stationery-cluster {
+    width: 145px;
+    height: 72px;
+  }
+  .console-fluted-skirt {
+    height: 120px;
+  }
+}
+
+@media (max-width: 960px) {
+  .tabletop-items-row {
+    gap: 8px;
+  }
+  .prop-magazines,
+  .prop-stationery-cluster {
+    display: none;
+  }
+  .prop-coffee {
+    width: 52px;
+    height: 84px;
+  }
+  .prop-pencil-cup {
+    width: 56px;
+    height: 96px;
+  }
+  .console-fluted-skirt {
+    height: 100px;
+  }
+}
+
+@media (max-width: 640px) {
+  .desk-prop {
+    display: none;
+  }
+  .tabletop-items-row {
+    margin-bottom: -24px;
+  }
+  .console-table-surface {
+    height: 48px;
+  }
+  .console-fluted-skirt {
+    height: 72px;
+    margin-top: -20px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Value & Trust Strip
+   -------------------------------------------------------------------------- */
+.value-trust-strip {
+  background: #ffffff;
+}
+
+.trust-item {
+  padding: 0.5rem;
+}
+
+.trust-icon {
+  font-size: 1.35rem;
+}
+
+.trust-title {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  line-height: 1.2;
+}
+
+.trust-desc {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Section Common Utilities
+   -------------------------------------------------------------------------- */
+.section-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--color-oxblood);
+  background: rgba(120, 32, 48, 0.06);
+  border: 1px solid rgba(120, 32, 48, 0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.section-title {
+  font-size: 2.15rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--text-heading);
+}
+
+.section-subtitle {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.max-w-2xl { max-width: 42rem; }
+.max-w-3xl { max-width: 48rem; }
+.max-w-4xl { max-width: 56rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* --------------------------------------------------------------------------
+   Benefit Cards
+   -------------------------------------------------------------------------- */
+.benefit-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.benefit-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+}
+
+.ig-glow {
+  background: rgba(221, 42, 123, 0.08);
+  border-color: rgba(221, 42, 123, 0.2);
+}
+.brass-glow {
+  background: rgba(184, 137, 66, 0.1);
+  border-color: rgba(184, 137, 66, 0.25);
+}
+.oxblood-glow {
+  background: rgba(120, 32, 48, 0.08);
+  border-color: rgba(120, 32, 48, 0.2);
+}
+.blue-glow {
+  background: rgba(81, 91, 212, 0.08);
+  border-color: rgba(81, 91, 212, 0.2);
+}
+.green-glow {
+  background: rgba(22, 101, 52, 0.08);
+  border-color: rgba(22, 101, 52, 0.2);
+}
+.purple-glow {
+  background: rgba(129, 52, 175, 0.08);
+  border-color: rgba(129, 52, 175, 0.2);
+}
+
+.benefit-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.benefit-text {
+  line-height: 1.55;
+}
+
+/* --------------------------------------------------------------------------
+   Interactive Demo Section
+   -------------------------------------------------------------------------- */
+.chain-number {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--color-oxblood);
+  background: rgba(120, 32, 48, 0.08);
+  border: 1px solid rgba(120, 32, 48, 0.2);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.virtual-toast-hint {
+  animation: fadeInHint 0.3s ease forwards;
+}
+
+@keyframes fadeInHint {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --------------------------------------------------------------------------
+   Product Cards & Specifications Table
+   -------------------------------------------------------------------------- */
+.product-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.product-features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comparison-table-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   Venue Cards (Use Cases)
+   -------------------------------------------------------------------------- */
+.venue-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+.venue-emoji {
+  font-size: 1.75rem;
+}
+
+.venue-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.venue-text {
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   Setup Steps
+   -------------------------------------------------------------------------- */
+.setup-step-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1.25rem;
+}
+
+.step-badge {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-default);
+  color: var(--text-heading);
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  font-weight: 800;
+}
+
+.step-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.step-desc {
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   Testimonial Quotes
+   -------------------------------------------------------------------------- */
+.quote-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.35rem;
+}
+
+.quote-body {
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   FAQ Accordion
+   -------------------------------------------------------------------------- */
+.faq-item {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.15rem 1.25rem;
+  transition: border-color 0.15s ease;
+}
+
+.faq-item.is-open {
+  border-color: var(--border-default);
+}
+
+.faq-question-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.faq-toggle-icon {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.faq-answer-pane {
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   Inquiry Form
+   -------------------------------------------------------------------------- */
+.inquiry-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-md);
+}
+
+.model-select-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.model-select-btn.selected {
+  background: #ffffff;
+  border-color: var(--text-heading);
+  box-shadow: 0 0 0 2px var(--text-heading);
+}
+
+.w-full {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Breakpoints for All Page Sections
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  .section-title {
+    font-size: 1.85rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  .hero-subtitle {
+    font-size: 0.98rem;
+  }
+  .section-title {
+    font-size: 1.55rem;
+  }
+  .product-card,
+  .comparison-table-card,
+  .inquiry-card {
+    padding: 1.25rem 1rem;
+  }
+  .trust-item {
+    padding: 0.35rem 0.25rem;
+  }
+  .trust-title {
+    font-size: 0.8rem;
+  }
+  .trust-desc {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 440px) {
+  .hero-title {
+    font-size: 1.75rem;
+  }
+  .hero-subtitle {
+    font-size: 0.92rem;
+  }
+  .model-select-btn {
+    padding: 0.4rem;
+  }
+}

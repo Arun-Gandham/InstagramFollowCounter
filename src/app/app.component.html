@@ -1,5 +1,7 @@
 <div class="app-shell flex flex-col min-h-screen">
-  <app-navbar></app-navbar>
+  @if (!isPublicLandingPage) {
+    <app-navbar></app-navbar>
+  }
   <main class="flex-grow">
     <router-outlet></router-outlet>
   </main>

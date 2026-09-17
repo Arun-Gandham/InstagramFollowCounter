@@ -1,0 +1,1096 @@
+<div class="product-landing-page">
+  <!-- Sticky Public Site Header -->
+  <app-site-header></app-site-header>
+
+  <!-- 1. HERO SECTION -->
+  <section class="hero-section" id="hero" aria-labelledby="hero-title">
+    <div class="container flex flex-col items-center text-center">
+      <!-- Main Headline & Subtitle (Strictly Center-Aligned) -->
+      <div class="hero-header-content text-center flex flex-col items-center mx-auto">
+        <h1 id="hero-title" class="hero-title">
+          Transform your foot traffic <br class="hidden sm:inline" />into followers.
+        </h1>
+
+        <!-- Supporting Paragraph -->
+        <p class="hero-subtitle">
+          Our real-time Counter grabs attention, builds trust, and helps grow your social audience.
+        </p>
+      </div>
+
+      <!-- Main Physical Counter Showcase on Fluted Architectural Table Stage -->
+      <div class="hero-counter-stage w-full">
+        <div class="plinth-ambient-glow" aria-hidden="true"></div>
+
+        <!-- Realistic Tabletop Showcase Scene (Counter + Tabletop Props + Fluted Console Table) -->
+        <div class="tabletop-stage-container">
+
+          <!-- Desk Items Row: Resting directly on the stone tabletop surface -->
+          <div class="tabletop-items-row">
+
+            <!-- 1. Left Desk Prop: Stack of Editorial Lookbook Magazines -->
+            <div class="desk-prop prop-magazines" aria-hidden="true" title="Editorial Lookbooks">
+              <svg class="prop-svg svg-magazines" viewBox="0 0 170 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="magShadow" x="-20%" y="-20%" width="140%" height="160%">
+                    <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#2d1e0f" flood-opacity="0.22" />
+                    <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#2d1e0f" flood-opacity="0.12" />
+                  </filter>
+                  <linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fae0cf" />
+                    <stop offset="60%" stop-color="#f0c6aa" />
+                    <stop offset="100%" stop-color="#deaa8b" />
+                  </linearGradient>
+                  <linearGradient id="hairGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#2e241c" />
+                    <stop offset="100%" stop-color="#18130e" />
+                  </linearGradient>
+                  <linearGradient id="coverBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fdfbf7" />
+                    <stop offset="100%" stop-color="#ede4d6" />
+                  </linearGradient>
+                  <linearGradient id="magSheenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5" />
+                    <stop offset="35%" stop-color="#ffffff" stop-opacity="0.1" />
+                    <stop offset="50%" stop-color="#ffffff" stop-opacity="0" />
+                  </linearGradient>
+                  <linearGradient id="magSpineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#dfd5c4" />
+                    <stop offset="50%" stop-color="#ffffff" />
+                    <stop offset="100%" stop-color="#dfd5c4" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Ground Contact Shadow on the stone table -->
+                <ellipse cx="82" cy="100" rx="70" ry="9" fill="#2d1e0f" fill-opacity="0.22" filter="blur(4px)" />
+
+                <!-- Layer 1: Bottom Magazine (Ivory pages, tilted -9deg) -->
+                <g transform="translate(10, 18) rotate(-9 70 45)" filter="url(#magShadow)">
+                  <polygon points="12,78 128,78 132,83 14,83" fill="#dfd7cb" />
+                  <polygon points="128,10 128,78 132,83 132,14" fill="#cfc6b7" />
+                  <line x1="14" y1="80" x2="131" y2="80" stroke="#c4baa9" stroke-width="0.5" />
+                  <line x1="14" y1="81.5" x2="131" y2="81.5" stroke="#ded6c7" stroke-width="0.5" />
+                  <rect x="10" y="8" width="118" height="71" rx="2" fill="#faf6f0" />
+                </g>
+
+                <!-- Layer 2: Middle Magazine (Crimson spine, tilted -6.5deg) -->
+                <g transform="translate(14, 14) rotate(-6.5 70 45)">
+                  <polygon points="11,79 129,79 131,83 13,83" fill="#e0584c" />
+                  <polygon points="129,9 129,79 131,83 131,13" fill="#b91c1c" />
+                  <rect x="9" y="8" width="120" height="72" rx="2" fill="#eef2f6" />
+                  <rect x="9" y="8" width="5" height="72" rx="1" fill="#dc2626" />
+                </g>
+
+                <!-- Layer 3: Top Magazine (The Creator Issue, tilted -4deg) -->
+                <g transform="translate(18, 10) rotate(-4 70 45)" filter="url(#magShadow)">
+                  <polygon points="8,81 128,81 130,84 9,84" fill="#d9d0c1" />
+                  <polygon points="128,8 128,81 130,84 130,11" fill="#c8bea9" />
+                  <line x1="129" y1="12" x2="129" y2="83" stroke="#b5a994" stroke-width="0.5" />
+
+                  <!-- Main Front Cover -->
+                  <rect x="6" y="6" width="122" height="76" rx="2.5" fill="url(#coverBgGrad)" stroke="#ded5c5"
+                    stroke-width="0.75" />
+                  <rect x="6" y="6" width="4.5" height="76" rx="1.5" fill="url(#magSpineGrad)" />
+
+                  <!-- Editorial Typography: Masthead -->
+                  <text x="16" y="19" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                    font-size="7.5" font-weight="900" letter-spacing="0.14em" fill="#181614">CREATOR</text>
+                  <text x="82" y="19" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                    font-size="5" font-weight="700" letter-spacing="0.08em" fill="#dc2626">N° 24</text>
+                  <line x1="16" y1="21.5" x2="120" y2="21.5" stroke="#181614" stroke-width="0.6" />
+
+                  <!-- Editorial Portrait Art on Cover (Matching media_1789665500836.png) -->
+                  <g transform="translate(36, 25)">
+                    <rect x="0" y="0" width="56" height="52" rx="2" fill="#ebe4d8" />
+                    <circle cx="28" cy="24" r="18" fill="#f5ede2" />
+
+                    <!-- Hair back -->
+                    <path
+                      d="M17 18 C16 9, 39 9, 39 18 C40 25, 41 32, 40 35 C38 35, 36 29, 35 24 C34 16, 21 16, 20 24 C19 29, 17 35, 15 35 C14 32, 16 25, 17 18 Z"
+                      fill="url(#hairGrad)" />
+                    <!-- Face shape -->
+                    <path d="M21 18 C21 15, 35 15, 35 18 C36 24, 34 33, 28 35 C22 33, 20 24, 21 18 Z"
+                      fill="url(#skinGrad)" />
+                    <!-- Eyes & Brows -->
+                    <path d="M23 20 Q25 19 27 20" stroke="#2a1f18" stroke-width="0.8" fill="none" />
+                    <path d="M29 20 Q31 19 33 20" stroke="#2a1f18" stroke-width="0.8" fill="none" />
+                    <circle cx="25" cy="22" r="0.9" fill="#1f1813" />
+                    <circle cx="31" cy="22" r="0.9" fill="#1f1813" />
+                    <!-- Nose bridge & shadow -->
+                    <path d="M28 21 L27.5 26 L29 26.5" stroke="#c99573" stroke-width="0.6" stroke-linecap="round"
+                      fill="none" />
+                    <!-- Lips -->
+                    <path d="M25.5 29.5 Q28 31 30.5 29.5" stroke="#b94a48" stroke-width="0.9" fill="none" />
+                    <!-- Neck & Collar -->
+                    <path d="M25 34 L25 39 L31 39 L31 34" fill="#deaa8b" />
+                    <path d="M21 38 L35 38 L38 52 L18 52 Z" fill="#181614" />
+                  </g>
+
+                  <!-- Cover Sub-lines & Barcode -->
+                  <text x="16" y="70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                    font-size="4" font-weight="600" fill="#4a4239">THE NEW VISUAL CULTURE</text>
+                  <text x="16" y="76" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                    font-size="3" font-weight="500" fill="#8c8072">AUTUMN / WINTER COLLECTIVE</text>
+
+                  <!-- Mini Barcode -->
+                  <g transform="translate(104, 66)">
+                    <line x1="0" y1="0" x2="0" y2="10" stroke="#181614" stroke-width="0.8" />
+                    <line x1="2" y1="0" x2="2" y2="10" stroke="#181614" stroke-width="0.4" />
+                    <line x1="4" y1="0" x2="4" y2="10" stroke="#181614" stroke-width="0.8" />
+                    <line x1="7" y1="0" x2="7" y2="10" stroke="#181614" stroke-width="0.4" />
+                    <line x1="9" y1="0" x2="9" y2="10" stroke="#181614" stroke-width="1.2" />
+                    <line x1="12" y1="0" x2="12" y2="10" stroke="#181614" stroke-width="0.6" />
+                  </g>
+
+                  <!-- Magazine Cover Gloss Sheen -->
+                  <rect x="6" y="6" width="122" height="76" rx="2.5" fill="url(#magSheenGrad)" pointer-events="none" />
+                </g>
+              </svg>
+            </div>
+
+            <!-- 2. Mid-Left Desk Prop: Takeaway Coffee Cup with Kraft Sleeve -->
+            <div class="desk-prop prop-coffee" aria-hidden="true" title="Takeaway Coffee Cup">
+              <svg class="prop-svg svg-coffee" viewBox="0 0 60 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="coffeeShadow" x="-30%" y="-20%" width="160%" height="160%">
+                    <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#2d1e0f" flood-opacity="0.22" />
+                  </filter>
+                  <linearGradient id="lidGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#3a3734" />
+                    <stop offset="35%" stop-color="#22201e" />
+                    <stop offset="85%" stop-color="#141312" />
+                    <stop offset="100%" stop-color="#262422" />
+                  </linearGradient>
+                  <linearGradient id="lidTopGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#423e3a" />
+                    <stop offset="60%" stop-color="#22201e" />
+                    <stop offset="100%" stop-color="#141312" />
+                  </linearGradient>
+                  <linearGradient id="cupWhiteGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#dcd7cc" />
+                    <stop offset="30%" stop-color="#f8f6f0" />
+                    <stop offset="70%" stop-color="#eae4d8" />
+                    <stop offset="100%" stop-color="#cfc7b9" />
+                  </linearGradient>
+                  <linearGradient id="sleeveKraftGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#936437" />
+                    <stop offset="30%" stop-color="#b68453" />
+                    <stop offset="70%" stop-color="#9c6d3e" />
+                    <stop offset="100%" stop-color="#805329" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Ground Ambient Contact Shadow -->
+                <ellipse cx="30" cy="91" rx="17" ry="4" fill="#2d1e0f" fill-opacity="0.3" filter="blur(3px)" />
+
+                <!-- Tapered Paper Cup Base & Body -->
+                <g filter="url(#coffeeShadow)">
+                  <path d="M8 22 L14 88 C14 90, 46 90, 46 88 L52 22 Z" fill="url(#cupWhiteGrad)" />
+                  <ellipse cx="30" cy="88" rx="16" ry="2.2" fill="#c4bcad" />
+                  <ellipse cx="30" cy="87.5" rx="15.8" ry="2" fill="#eae4d8" />
+                </g>
+
+                <!-- Kraft Corrugated Heat Sleeve -->
+                <g>
+                  <path d="M9.8 40 L12.6 71 C12.6 72.8, 47.4 72.8, 47.4 71 L50.2 40 C50.2 38.5, 9.8 38.5, 9.8 40 Z"
+                    fill="url(#sleeveKraftGrad)" />
+                  <path d="M9.8 40 C14 41.5, 46 41.5, 50.2 40" stroke="#70441d" stroke-width="0.8" fill="none" />
+                  <path d="M12.6 71 C16 72.5, 44 72.5, 47.4 71" stroke="#5a3615" stroke-width="0.8" fill="none" />
+
+                  <!-- Corrugated Texture Lines -->
+                  <path
+                    d="M14 41 L16 70 M18 41.2 L19.8 70.2 M22 41.4 L23.5 70.4 M26 41.5 L27.2 70.5 M30 41.6 L30.8 70.6 M34 41.5 L34.5 70.5 M38 41.4 L38.2 70.4 M42 41.2 L41.8 70.2 M46 41 L45.5 70"
+                    stroke="#7b5229" stroke-width="0.75" stroke-opacity="0.5" />
+                  <path
+                    d="M14.6 41 L16.6 70 M18.6 41.2 L20.4 70.2 M22.6 41.4 L24.1 70.4 M26.6 41.5 L27.8 70.5 M30.6 41.6 L31.4 70.6 M34.6 41.5 L35.1 70.5 M38.6 41.4 L38.8 70.4 M42.6 41.2 L42.4 70.2 M46.6 41 L46.1 70"
+                    stroke="#cf9c6b" stroke-width="0.5" stroke-opacity="0.4" />
+                  <line x1="43" y1="41" x2="42.5" y2="70" stroke="#5a3615" stroke-width="1.2" />
+                </g>
+
+                <!-- Cup Rolled White Collar -->
+                <ellipse cx="30" cy="22" rx="22" ry="3.5" fill="#e8e2d5" stroke="#fdfbf8" stroke-width="0.8" />
+
+                <!-- Matte Black Plastic Sipping Lid -->
+                <g>
+                  <path d="M6 21 C6 23.8, 54 23.8, 54 21 L54 18 C54 15.5, 6 15.5, 6 18 Z" fill="url(#lidGrad)" />
+                  <ellipse cx="30" cy="18" rx="24" ry="4" fill="url(#lidTopGrad)" />
+                  <ellipse cx="30" cy="16" rx="20.5" ry="3.2" fill="#1a1918" />
+                  <ellipse cx="30" cy="15.2" rx="17.5" ry="2.6" fill="url(#lidGrad)" />
+                  <path d="M22 13 C22 10.5, 38 10.5, 38 13 L37 15 C37 16, 23 16, 23 15 Z" fill="#2d2b28" />
+                  <ellipse cx="30" cy="12.2" rx="4.8" ry="1.4" fill="#0d0c0b" />
+                  <path d="M12 20 C18 21.6, 42 21.6, 48 20" stroke="#5a554f" stroke-width="0.8" fill="none" />
+                  <ellipse cx="30" cy="15.8" rx="19.5" ry="2.8" stroke="#3d3a36" stroke-width="0.6" fill="none" />
+                </g>
+              </svg>
+            </div>
+
+            <!-- 3. Center: Physical Instagram Split-Flap Counter with Floating Controls -->
+            <div class="counter-display-wrapper">
+              <app-mechanical-counter #heroCounter [digitCount]="selectedDigitCount"
+                (digitCountChange)="onDigitCountChanged($event)" (actionClick)="scrollToSection('get-yours')"
+                surfaceType="plinth"></app-mechanical-counter>
+            </div>
+
+            <!-- 4. Mid-Right Desk Prop: Pastel Yellow Ceramic Pencil Cup with Pens & Pencil -->
+            <div class="desk-prop prop-pencil-cup" aria-hidden="true" title="Stationery Cup">
+              <svg class="prop-svg svg-pencil-cup" viewBox="0 0 65 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="cupShadow" x="-30%" y="-20%" width="160%" height="160%">
+                    <feDropShadow dx="2" dy="5" stdDeviation="4" flood-color="#2d1e0f" flood-opacity="0.22" />
+                  </filter>
+                  <linearGradient id="ceramicYellowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#fff5bd" />
+                    <stop offset="35%" stop-color="#f8e178" />
+                    <stop offset="75%" stop-color="#edd05a" />
+                    <stop offset="100%" stop-color="#d4b238" />
+                  </linearGradient>
+                  <linearGradient id="blackPenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#3d444b" />
+                    <stop offset="40%" stop-color="#1f2327" />
+                    <stop offset="100%" stop-color="#0f1113" />
+                  </linearGradient>
+                  <linearGradient id="bluePenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#3b82f6" />
+                    <stop offset="35%" stop-color="#1d4ed8" />
+                    <stop offset="100%" stop-color="#1e3a8a" />
+                  </linearGradient>
+                  <linearGradient id="pencilWoodGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#fde047" />
+                    <stop offset="45%" stop-color="#eab308" />
+                    <stop offset="100%" stop-color="#ca8a04" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Ground Ambient Contact Shadow -->
+                <ellipse cx="33" cy="105" rx="20" ry="4.5" fill="#2d1e0f" fill-opacity="0.28" filter="blur(3px)" />
+
+                <!-- Instruments Inside the Cup -->
+                <g>
+                  <!-- Left: Black Pen / Stylus (tilted -12deg) -->
+                  <g transform="translate(18, 55) rotate(-12)">
+                    <rect x="-3" y="-46" width="6" height="52" rx="1.5" fill="url(#blackPenGrad)" />
+                    <rect x="2" y="-42" width="1.8" height="28" rx="0.8" fill="#cbd5e1" stroke="#94a3b8"
+                      stroke-width="0.3" />
+                    <rect x="-2" y="-49" width="4" height="3.5" rx="1" fill="#cbd5e1" />
+                    <rect x="-3" y="-32" width="6" height="1.2" fill="#cbd5e1" />
+                  </g>
+
+                  <!-- Center: Classic Blue Ballpoint Pen (tilted 3deg) -->
+                  <g transform="translate(32, 52) rotate(3)">
+                    <rect x="-2.8" y="-48" width="5.6" height="54" rx="1" fill="url(#bluePenGrad)" />
+                    <line x1="0" y1="-44" x2="0" y2="4" stroke="#ffffff" stroke-width="0.9" stroke-opacity="0.75" />
+                    <rect x="-3.2" y="-46" width="6.4" height="20" rx="1.5" fill="#1d4ed8" />
+                    <path d="M2.5 -44 L4.5 -44 L4.5 -22 L2.8 -22" stroke="#1e40af" stroke-width="1.2" fill="none" />
+                    <polygon points="-2.5,-46 2.5,-46 0,-50" fill="#1e3a8a" />
+                  </g>
+
+                  <!-- Right: Yellow #2 Wooden Pencil (tilted 14deg) -->
+                  <g transform="translate(44, 55) rotate(14)">
+                    <rect x="-3" y="-40" width="6" height="46" fill="url(#pencilWoodGrad)" />
+                    <line x1="-1" y1="-40" x2="-1" y2="6" stroke="#ca8a04" stroke-width="0.6" />
+                    <line x1="1" y1="-40" x2="1" y2="6" stroke="#fef08a" stroke-width="0.5" />
+                    <rect x="-3" y="-48" width="6" height="8.5" fill="#94a3b8" />
+                    <line x1="-3" y1="-45" x2="3" y2="-45" stroke="#64748b" stroke-width="0.6" />
+                    <line x1="-3" y1="-43" x2="3" y2="-43" stroke="#64748b" stroke-width="0.6" />
+                    <path d="M-2.8 -48 C-2.8 -53, 2.8 -53, 2.8 -48 Z" fill="#f472b6" />
+                    <ellipse cx="0" cy="-48" rx="2.8" ry="0.8" fill="#fbcfe8" />
+                  </g>
+                </g>
+
+                <!-- Cup Cavity Shadow -->
+                <ellipse cx="32" cy="48" rx="20" ry="8" fill="#6d581c" />
+
+                <!-- Pastel Yellow Ceramic Cup Body (Handcrafted organic undulating rim) -->
+                <g filter="url(#cupShadow)">
+                  <path d="
+                    M 11 48
+                    C 11 44, 16 46, 21 44
+                    C 26 42, 33 43, 38 45
+                    C 43 47, 49 43, 53 47
+                    C 55 50, 52 88, 50 101
+                    C 49 104, 15 104, 14 101
+                    C 12 88, 9 52, 11 48
+                    Z" fill="url(#ceramicYellowGrad)" />
+                  <path d="
+                    M 11 48
+                    C 16 45, 21 44, 26 43
+                    C 33 43.5, 38 45, 43 46.5
+                    C 48 44, 51 46, 53 47
+                    C 49 51, 41 53, 32 53
+                    C 22 53, 15 51, 11 48
+                    Z" fill="#fff8d1" opacity="0.9" />
+                  <path d="M16 54 C15 72, 18 92, 19 98" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"
+                    opacity="0.45" filter="blur(1px)" />
+                  <path d="M14 101 C22 104, 42 104, 50 101" stroke="#b89626" stroke-width="1.2" fill="none" />
+                </g>
+              </svg>
+            </div>
+
+            <!-- 5. Far-Right Desk Prop: Cyan Highlighter, Paperclips & Sticky Notes -->
+            <div class="desk-prop prop-stationery-cluster" aria-hidden="true" title="Desk Accessories">
+              <svg class="prop-svg svg-stationery" viewBox="0 0 170 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="statShadow" x="-20%" y="-20%" width="140%" height="150%">
+                    <feDropShadow dx="1" dy="3" stdDeviation="3" flood-color="#2d1e0f" flood-opacity="0.22" />
+                  </filter>
+                  <linearGradient id="cyanBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#38bdf8" />
+                    <stop offset="40%" stop-color="#00b4d8" />
+                    <stop offset="100%" stop-color="#0077b6" />
+                  </linearGradient>
+                  <linearGradient id="capBlackGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#334155" />
+                    <stop offset="50%" stop-color="#1e293b" />
+                    <stop offset="100%" stop-color="#0f172a" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Ground Ambient Contact Shadows -->
+                <ellipse cx="48" cy="54" rx="36" ry="4" fill="#2d1e0f" fill-opacity="0.24" filter="blur(2.5px)" />
+                <ellipse cx="120" cy="54" rx="38" ry="6" fill="#2d1e0f" fill-opacity="0.2" filter="blur(3.5px)" />
+
+                <!-- Cyan Highlighter Marker (Tilted ~ 7deg) -->
+                <g transform="translate(10, 42) rotate(7)" filter="url(#statShadow)">
+                  <rect x="0" y="2" width="46" height="15" rx="3" fill="url(#cyanBodyGrad)" />
+                  <line x1="4" y1="5" x2="42" y2="5" stroke="#ffffff" stroke-width="1" stroke-opacity="0.65" />
+                  <line x1="4" y1="7" x2="42" y2="7" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.35" />
+                  <polygon points="0,4 -6,6 -6,13 0,15" fill="#0096c7" />
+                  <polygon points="-6,7 -9,8 -9,12 -6,13" fill="#023e8a" />
+                  <rect x="42" y="0.5" width="26" height="18" rx="3.5" fill="url(#capBlackGrad)" />
+                  <rect x="45" y="-1.5" width="18" height="3" rx="1.5" fill="#0f172a" stroke="#475569"
+                    stroke-width="0.5" />
+                  <line x1="52" y1="4" x2="52" y2="15" stroke="#475569" stroke-width="1" />
+                  <line x1="56" y1="4" x2="56" y2="15" stroke="#475569" stroke-width="1" />
+                  <line x1="60" y1="4" x2="60" y2="15" stroke="#475569" stroke-width="1" />
+                </g>
+
+                <!-- Scattered Colored Wire Paperclips -->
+                <g>
+                  <g transform="translate(80, 52) rotate(-25)" filter="url(#statShadow)">
+                    <path d="M0 2 L12 2 C15 2, 15 8, 12 8 L3 8 C1 8, 1 4, 3 4 L10 4" stroke="#22c55e" stroke-width="1.2"
+                      stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                  </g>
+                  <g transform="translate(86, 60) rotate(35)" filter="url(#statShadow)">
+                    <path d="M0 2 L10 2 C13 2, 13 7, 10 7 L3 7 C1.5 7, 1.5 3.5, 3 3.5 L8 3.5" stroke="#ef4444"
+                      stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                  </g>
+                  <g transform="translate(74, 58) rotate(-8)" filter="url(#statShadow)">
+                    <path d="M0 1.8 L11 1.8 C13.5 1.8, 13.5 6.5, 11 6.5 L3 6.5 C1.5 6.5, 1.5 3.5, 3 3.5 L9 3.5"
+                      stroke="#94a3b8" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                  </g>
+                </g>
+
+                <!-- Two Stacked Pastel Sticky Note Pads -->
+                <!-- Note Pad 1: Warm Pastel Canary Yellow (Bottom, tilted -5deg) -->
+                <g transform="translate(95, 16) rotate(-5)" filter="url(#statShadow)">
+                  <polygon points="4,43 45,43 47,48 5,48" fill="#eab308" />
+                  <polygon points="45,4 45,43 47,48 47,8" fill="#ca8a04" />
+                  <line x1="5" y1="45" x2="46" y2="45" stroke="#facc15" stroke-width="0.5" />
+                  <line x1="5" y1="46.5" x2="46" y2="46.5" stroke="#d97706" stroke-width="0.5" />
+                  <rect x="3" y="3" width="42" height="40" rx="1.5" fill="#fef08a" stroke="#fde047"
+                    stroke-width="0.75" />
+                  <path d="M40 38 Q43 42 45 43 L42 43 Z" fill="#eab308" opacity="0.6" />
+                </g>
+
+                <!-- Note Pad 2: Pastel Sky Blue (Top, overlapping, tilted 7deg) -->
+                <g transform="translate(122, 14) rotate(7)" filter="url(#statShadow)">
+                  <polygon points="4,41 43,41 45,46 5,46" fill="#38bdf8" />
+                  <polygon points="43,4 43,41 45,46 45,8" fill="#0284c7" />
+                  <line x1="5" y1="43" x2="44" y2="43" stroke="#7dd3fc" stroke-width="0.5" />
+                  <line x1="5" y1="44.5" x2="44" y2="44.5" stroke="#0369a1" stroke-width="0.5" />
+                  <rect x="3" y="3" width="40" height="38" rx="1.5" fill="#bae6fd" stroke="#7dd3fc"
+                    stroke-width="0.75" />
+                  <path d="M3 3 L25 3 L3 25 Z" fill="#ffffff" opacity="0.4" />
+                </g>
+              </svg>
+            </div>
+
+          </div> <!-- /.tabletop-items-row -->
+
+          <!-- Fluted Architectural Console Pedestal Table (Reference Design) -->
+          <div class="fluted-pedestal-console" aria-hidden="true">
+            <div class="console-table-surface">
+              <div class="stone-bevel-highlight"></div>
+            </div>
+            <div class="console-fluted-skirt"></div>
+            <div class="console-ground-shadow"></div>
+          </div>
+
+        </div> <!-- /.tabletop-stage-container -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. VALUE & TRUST STRIP -->
+  <section class="value-trust-strip py-6 border-y border-subtle" aria-label="Product Features Overview">
+    <div class="container">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 items-center text-center">
+        <div class="trust-item flex items-center justify-center gap-2.5">
+          <span class="trust-icon">📡</span>
+          <div class="text-left">
+            <span class="trust-title font-heading">Real-Time Sync</span>
+            <span class="trust-desc text-xs text-muted">Meta Graph API</span>
+          </div>
+        </div>
+
+        <div class="trust-item flex items-center justify-center gap-2.5">
+          <span class="trust-icon">📶</span>
+          <div class="text-left">
+            <span class="trust-title font-heading">Wi-Fi Connected</span>
+            <span class="trust-desc text-xs text-muted">2.4 GHz ESP32</span>
+          </div>
+        </div>
+
+        <div class="trust-item flex items-center justify-center gap-2.5">
+          <span class="trust-icon">📟</span>
+          <div class="text-left">
+            <span class="trust-title font-heading">5 & 7-Digit Reels</span>
+            <span class="trust-desc text-xs text-muted">Desk & Flagship</span>
+          </div>
+        </div>
+
+        <div class="trust-item flex items-center justify-center gap-2.5">
+          <span class="trust-icon">⚡</span>
+          <div class="text-left">
+            <span class="trust-title font-heading">60-Sec Setup</span>
+            <span class="trust-desc text-xs text-muted">Zero code needed</span>
+          </div>
+        </div>
+
+        <div class="trust-item col-span-2 sm:col-span-1 flex items-center justify-center gap-2.5">
+          <span class="trust-icon">🔌</span>
+          <div class="text-left">
+            <span class="trust-title font-heading">5V USB-C Power</span>
+            <span class="trust-desc text-xs text-muted">Safe low-voltage</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. WHY BUSINESSES USE IT -->
+  <section class="benefits-section py-16" id="why-business" aria-labelledby="benefits-heading">
+    <div class="container">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="section-tag font-mono">FOR COMMERCIAL VENUES</span>
+        <h2 id="benefits-heading" class="section-title font-heading mt-2">
+          Turn foot traffic into lasting community.
+        </h2>
+        <p class="section-subtitle text-muted mt-2">
+          Your physical space has an audience every single day. A mechanical counter turns casual visitors into engaged
+          followers the moment they walk through your doors.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Benefit 1 -->
+        <div class="card benefit-card">
+          <div class="benefit-icon-box ig-glow">
+            <span class="text-xl">📸</span>
+          </div>
+          <h3 class="benefit-title font-heading mt-4">In-Store Follower Magnet</h3>
+          <p class="benefit-text text-sm text-muted mt-2">
+            Placed at the register or waiting area, customers naturally scan your Instagram handle to experience the
+            split-flap click in real-time.
+          </p>
+        </div>
+
+        <!-- Benefit 2 -->
+        <div class="card benefit-card">
+          <div class="benefit-icon-box brass-glow">
+            <span class="text-xl">🔊</span>
+          </div>
+          <h3 class="benefit-title font-heading mt-4">The Audible Split-Flap Click</h3>
+          <p class="benefit-text text-sm text-muted mt-2">
+            Unlike silent mobile notifications, the mechanical flap produces a subtle, tactile sound that turns
+            milestone moments into shared celebrations.
+          </p>
+        </div>
+
+        <!-- Benefit 3 -->
+        <div class="card benefit-card">
+          <div class="benefit-icon-box oxblood-glow">
+            <span class="text-xl">🏛️</span>
+          </div>
+          <h3 class="benefit-title font-heading mt-4">Tangible Social Proof</h3>
+          <p class="benefit-text text-sm text-muted mt-2">
+            A live physical counter signals to new customers that your brand is active, trusted, and backed by a
+            thriving real-world community.
+          </p>
+        </div>
+
+        <!-- Benefit 4 -->
+        <div class="card benefit-card">
+          <div class="benefit-icon-box blue-glow">
+            <span class="text-xl">🤝</span>
+          </div>
+          <h3 class="benefit-title font-heading mt-4">Team Motivation in the Room</h3>
+          <p class="benefit-text text-sm text-muted mt-2">
+            Give your staff a tangible number to rally behind. Watching numbers increment together builds collective
+            pride in store growth.
+          </p>
+        </div>
+
+        <!-- Benefit 5 -->
+        <div class="card benefit-card">
+          <div class="benefit-icon-box green-glow">
+            <span class="text-xl">📱</span>
+          </div>
+          <h3 class="benefit-title font-heading mt-4">Organic Customer Stories</h3>
+          <p class="benefit-text text-sm text-muted mt-2">
+            Visitors record videos of the flaps flipping to post on their Instagram Stories, creating continuous organic
+            user-generated promotion.
+          </p>
+        </div>
+
+        <!-- Benefit 6 -->
+        <div class="card benefit-card">
+          <div class="benefit-icon-box purple-glow">
+            <span class="text-xl">🔒</span>
+          </div>
+          <h3 class="benefit-title font-heading mt-4">Enterprise Data Security</h3>
+          <p class="benefit-text text-sm text-muted mt-2">
+            Operates via official Meta Graph API OAuth with AES-256 encrypted token storage. Your Instagram login
+            credentials are never collected.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. INTERACTIVE FOLLOW DEMONSTRATION -->
+  <section class="interactive-demo-section py-16 bg-surface-subtle border-y border-subtle" id="interactive-demo"
+    aria-labelledby="demo-heading">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        <!-- Left: Walkthrough explanation -->
+        <div>
+          <span class="section-tag font-mono">LIVE ARCHITECTURE</span>
+          <h2 id="demo-heading" class="section-title font-heading mt-2">
+            How a follow becomes a mechanical flip.
+          </h2>
+          <p class="section-subtitle text-muted mt-3">
+            A seamless bridge between Meta’s official Graph API, our secure cloud gateway, and the precision
+            micro-steppers inside your counter.
+          </p>
+
+          <div class="steps-chain mt-6 flex flex-col gap-4">
+            <div class="chain-step flex items-start gap-3">
+              <span class="chain-number font-mono">01</span>
+              <div>
+                <h4 class="font-heading font-bold text-sm text-heading">Customer Taps Follow</h4>
+                <p class="text-xs text-muted mt-0.5">A visitor at your venue scans your QR or visits your profile and
+                  taps "Follow".</p>
+              </div>
+            </div>
+
+            <div class="chain-step flex items-start gap-3">
+              <span class="chain-number font-mono">02</span>
+              <div>
+                <h4 class="font-heading font-bold text-sm text-heading">Graph API Gateway Polling</h4>
+                <p class="text-xs text-muted mt-0.5">Our cloud service fetches the updated count securely over encrypted
+                  Meta webhooks.</p>
+              </div>
+            </div>
+
+            <div class="chain-step flex items-start gap-3">
+              <span class="chain-number font-mono">03</span>
+              <div>
+                <h4 class="font-heading font-bold text-sm text-heading">Mechanical Differential Flip</h4>
+                <p class="text-xs text-muted mt-0.5">Only the affected digit drums rotate forward with a satisfying
+                  mechanical snap.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Simulation Button -->
+          <div class="interactive-trigger-box mt-8 p-4 bg-surface rounded-md border border-subtle">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <div>
+                <span class="text-xs font-bold text-heading">Try it virtually right now:</span>
+                <p class="text-xs text-muted">Tap to simulate a new customer follow on the display</p>
+              </div>
+              <button type="button" (click)="simulateVirtualFollow()" class="btn btn-ig btn-sm flex items-center gap-2">
+                <span>➕</span>
+                <span>Follow &#64;yourbusiness</span>
+              </button>
+            </div>
+            @if (hasVirtualFollowed) {
+            <div class="virtual-toast-hint font-mono text-xs text-success mt-2">
+              ✓ Follower count stepped to {{ interactiveCount.toLocaleString() }}. Mechanical flap rotated!
+            </div>
+            }
+          </div>
+
+          <div class="engineering-disclaimer text-xs text-dim mt-4">
+            ℹ️ <strong>Engineering Note:</strong> This interactive preview runs in your browser. Real-world physical
+            device update cadence is scheduled via Meta Graph API polling (approx. 30–60 seconds).
+          </div>
+        </div>
+
+        <!-- Right: Real-time Interactive Counter Visual -->
+        <div class="flex flex-col items-center justify-center p-6 bg-surface rounded-xl border border-subtle shadow-sm">
+          <div class="counter-header-bar flex items-center justify-between w-full mb-4">
+            <span class="badge badge-success font-mono text-xs">VIRTUAL HARDWARE PREVIEW</span>
+            <span class="font-mono text-xs text-muted">&#64;artisan_counter</span>
+          </div>
+
+          <app-mechanical-counter #interactiveCounter [customCount]="interactiveCount" [showControls]="false"
+            [autoAnimate]="false" surfaceType="minimal"></app-mechanical-counter>
+
+          <span class="text-xs text-muted font-mono mt-4">MODEL FC-05M • 5-DIGIT SPLIT-FLAP REEL</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. PRODUCTS & SPECIFICATIONS -->
+  <section class="products-section py-16" id="products" aria-labelledby="products-heading">
+    <div class="container">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="section-tag font-mono">TWO PRECISION VARIANTS</span>
+        <h2 id="products-heading" class="section-title font-heading mt-2">
+          Engineered for spaces of every scale.
+        </h2>
+        <p class="section-subtitle text-muted mt-2">
+          Choose between our compact desk counter for retail checkouts or our wide flagship display for expansive walls
+          and flagship stores.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <!-- 5-Digit Model Card -->
+        <div class="card product-card">
+          <div class="product-badge-row flex items-center justify-between mb-4">
+            <span class="badge badge-neutral font-mono">MODEL FC-05M</span>
+            <span class="badge badge-success font-mono">POPULAR FOR CAFÉS</span>
+          </div>
+          <h3 class="product-title font-heading text-2xl">5-Digit Compact Counter</h3>
+          <p class="product-desc text-sm text-muted mt-1">
+            Tailored for checkout desks, boutique counters, reception areas, and indie creators.
+          </p>
+
+          <div
+            class="product-metric-stat my-4 p-3 bg-surface-subtle rounded border border-subtle flex items-baseline justify-between font-mono">
+            <span class="text-xs text-muted">CAPACITY</span>
+            <span class="font-bold text-heading">Up to 99,999 Followers</span>
+          </div>
+
+          <ul class="product-features-list text-xs text-muted flex flex-col gap-2 mb-6">
+            <li>✓ 42 cm chassis width (fits on any barista or checkout surface)</li>
+            <li>✓ 5 independent mechanical split-flap drums with contrast-white typography</li>
+            <li>✓ Integrated 2.4 GHz Wi-Fi antenna with captive portal phone pairing</li>
+            <li>✓ Universal 5V USB-C power with low energy draw (&lt; 2.5W)</li>
+            <li>✓ Non-slip silicone table pads + rear dual keyhole wall-mount slots</li>
+          </ul>
+
+          <button type="button" (click)="scrollToSection('get-yours')" class="btn btn-secondary w-full">
+            Inquire for 5-Digit Model
+          </button>
+        </div>
+
+        <!-- 7-Digit Model Card -->
+        <div class="card product-card">
+          <div class="product-badge-row flex items-center justify-between mb-4">
+            <span class="badge badge-neutral font-mono">MODEL FC-07M</span>
+            <span class="badge badge-info font-mono">FLAGSHIP VENUES</span>
+          </div>
+          <h3 class="product-title font-heading text-2xl">7-Digit Flagship Counter</h3>
+          <p class="product-desc text-sm text-muted mt-1">
+            Built for national brands, creative agencies, major sports venues, and verified creators.
+          </p>
+
+          <div
+            class="product-metric-stat my-4 p-3 bg-surface-subtle rounded border border-subtle flex items-baseline justify-between font-mono">
+            <span class="text-xs text-muted">CAPACITY</span>
+            <span class="font-bold text-heading">Up to 9,999,999 Followers</span>
+          </div>
+
+          <ul class="product-features-list text-xs text-muted flex flex-col gap-2 mb-6">
+            <li>✓ 56 cm panoramic chassis width (commanding wall or reception presence)</li>
+            <li>✓ 7 precision split-flap drums with differential stepper motor control</li>
+            <li>✓ High-contrast anti-reflective recessed optical glass window</li>
+            <li>✓ Universal 5V USB-C power with low energy draw (&lt; 3.0W)</li>
+            <li>✓ Heavy-duty internal steel reinforcement chassis for wall mounting</li>
+          </ul>
+
+          <button type="button" (click)="scrollToSection('get-yours')" class="btn btn-primary w-full">
+            Inquire for 7-Digit Model
+          </button>
+        </div>
+      </div>
+
+      <!-- Hardware Comparison Matrix -->
+      <div class="card comparison-table-card" id="specifications">
+        <h3 class="text-base font-bold text-heading mb-4">Detailed Hardware Specifications</h3>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Specification</th>
+                <th>Model FC-05M (5 Digits)</th>
+                <th>Model FC-07M (7 Digits)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-semibold text-heading">Max Follower Display</td>
+                <td class="font-mono">99,999</td>
+                <td class="font-mono">9,999,999</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-heading">Physical Dimensions</td>
+                <td class="font-mono">420 × 120 × 90 mm</td>
+                <td class="font-mono">560 × 120 × 90 mm</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-heading">Display Technology</td>
+                <td>Electro-mechanical split-flap drums</td>
+                <td>Electro-mechanical split-flap drums</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-heading">Connectivity</td>
+                <td class="font-mono">Wi-Fi 802.11 b/g/n (2.4 GHz)</td>
+                <td class="font-mono">Wi-Fi 802.11 b/g/n (2.4 GHz)</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-heading">Power Supply</td>
+                <td class="font-mono">5V DC / 2A via USB-C</td>
+                <td class="font-mono">5V DC / 2A via USB-C</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-heading">Power Consumption</td>
+                <td class="font-mono">&lt; 2.5W active / 0.8W idle</td>
+                <td class="font-mono">&lt; 3.0W active / 1.0W idle</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-heading">Mounting Options</td>
+                <td>Tabletop rubber feet + Wall keyhole slots</td>
+                <td>Tabletop rubber feet + Wall keyhole slots</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-heading">Supported Accounts</td>
+                <td>Instagram Creator or Business accounts</td>
+                <td>Instagram Creator or Business accounts</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. USE CASES ACROSS VENUES -->
+  <section class="use-cases-section py-16 bg-surface-subtle border-t border-subtle" id="use-cases"
+    aria-labelledby="usecases-heading">
+    <div class="container">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="section-tag font-mono">REAL-WORLD APPLICATIONS</span>
+        <h2 id="usecases-heading" class="section-title font-heading mt-2">
+          Designed to fit your physical environment.
+        </h2>
+        <p class="section-subtitle text-muted mt-2">
+          From busy specialty espresso bars to boutique creative agencies, the counter adds character, conversation, and
+          credibility.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="card venue-card">
+          <div class="venue-emoji">☕</div>
+          <h3 class="venue-title font-heading mt-2">Cafés & Espresso Bars</h3>
+          <p class="venue-text text-sm text-muted mt-1">
+            Place it directly next to the pick-up counter. Customers waiting for their pour-over have a direct, playful
+            reason to follow your roast updates.
+          </p>
+        </div>
+
+        <div class="card venue-card">
+          <div class="venue-emoji">🛍️</div>
+          <h3 class="venue-title font-heading mt-2">Boutiques & Retail Shops</h3>
+          <p class="venue-text text-sm text-muted mt-1">
+            A premium design centerpiece on the packaging counter. Validates brand quality and keeps buyers connected to
+            seasonal drop announcements.
+          </p>
+        </div>
+
+        <div class="card venue-card">
+          <div class="venue-emoji">✂️</div>
+          <h3 class="venue-title font-heading mt-2">Salons & Barbershops</h3>
+          <p class="venue-text text-sm text-muted mt-1">
+            Positioned near mirrors or in reception, clients follow your stylists’ portfolios while waiting for their
+            appointment.
+          </p>
+        </div>
+
+        <div class="card venue-card">
+          <div class="venue-emoji">🏋️</div>
+          <h3 class="venue-title font-heading mt-2">Fitness & Wellness Studios</h3>
+          <p class="venue-text text-sm text-muted mt-1">
+            Celebrate community attendance and class milestones at the front desk. Members watch the club grow with
+            every workout.
+          </p>
+        </div>
+
+        <div class="card venue-card">
+          <div class="venue-emoji">🎨</div>
+          <h3 class="venue-title font-heading mt-2">Creative Agencies & Offices</h3>
+          <p class="venue-text text-sm text-muted mt-1">
+            Keep remote and in-office creative teams united behind a live metric on the agency wall.
+          </p>
+        </div>
+
+        <div class="card venue-card">
+          <div class="venue-emoji">🎪</div>
+          <h3 class="venue-title font-heading mt-2">Expos, Pop-ups & Events</h3>
+          <p class="venue-text text-sm text-muted mt-1">
+            The ultimate crowd magnet at conventions and pop-ups. Powered effortlessly off any 5V USB battery bank.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. HOW IT WORKS (SETUP) -->
+  <section class="how-it-works-section py-16" id="how-it-works" aria-labelledby="how-heading">
+    <div class="container">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="section-tag font-mono">60-SECOND ONBOARDING</span>
+        <h2 id="how-heading" class="section-title font-heading mt-2">
+          From unboxing to your first flip in 4 steps.
+        </h2>
+        <p class="section-subtitle text-muted mt-2">
+          No engineering knowledge or complex software installations required. Everything configures seamlessly through
+          your phone.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="setup-step-card card">
+          <div class="step-badge font-mono">01</div>
+          <h3 class="step-title font-heading mt-3">Power On</h3>
+          <p class="step-desc text-sm text-muted mt-1">
+            Plug the included USB-C cable into the rear port and connect to any standard 5V wall adapter.
+          </p>
+        </div>
+
+        <div class="setup-step-card card">
+          <div class="step-badge font-mono">02</div>
+          <h3 class="step-title font-heading mt-3">Connect Wi-Fi</h3>
+          <p class="step-desc text-sm text-muted mt-1">
+            Join the counter’s temporary Wi-Fi setup network on your smartphone and enter your venue’s Wi-Fi
+            credentials.
+          </p>
+        </div>
+
+        <div class="setup-step-card card">
+          <div class="step-badge font-mono">03</div>
+          <h3 class="step-title font-heading mt-3">Link Instagram</h3>
+          <p class="step-desc text-sm text-muted mt-1">
+            Sign in through official Meta OAuth to authorize follower count retrieval for your Creator or Business
+            profile.
+          </p>
+        </div>
+
+        <div class="setup-step-card card">
+          <div class="step-badge font-mono">04</div>
+          <h3 class="step-title font-heading mt-3">Watch It Roll</h3>
+          <p class="step-desc text-sm text-muted mt-1">
+            The mechanical drums self-calibrate and rotate to display your live community count.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. EARLY ADOPTER COMMUNITY PREVIEW -->
+  <section class="testimonials-section py-16 bg-surface-subtle border-y border-subtle"
+    aria-labelledby="community-heading">
+    <div class="container">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="section-tag font-mono">CLOSED BETA PILOT</span>
+        <h2 id="community-heading" class="section-title font-heading mt-2">
+          Tested with real independent stores.
+        </h2>
+        <p class="section-subtitle text-muted mt-1">
+          Feedback from our initial pilot deployment cohort across artisan bakeries, coffee shops, and creative studios.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="card quote-card">
+          <p class="quote-body text-sm text-heading italic">
+            "Customers stop at our espresso bar just to watch it flip. We saw more spontaneous follows in our first
+            month of having it on the counter than in the previous six months."
+          </p>
+          <div class="quote-author mt-4 pt-3 border-t border-subtle flex items-center justify-between">
+            <div>
+              <div class="font-bold text-heading text-xs">Elena R.</div>
+              <div class="text-xs text-muted font-mono">Roastery & Coffee Bar, Beta Pilot</div>
+            </div>
+            <span class="badge badge-neutral font-mono text-xs">FC-05M</span>
+          </div>
+        </div>
+
+        <div class="card quote-card">
+          <p class="quote-body text-sm text-heading italic">
+            "The physical presence in the boutique is unbelievable. It doesn't look like a cheap plastic screen—the warm
+            cream enclosure and mechanical flaps feel like genuine craftsmanship."
+          </p>
+          <div class="quote-author mt-4 pt-3 border-t border-subtle flex items-center justify-between">
+            <div>
+              <div class="font-bold text-heading text-xs">Marcus V.</div>
+              <div class="text-xs text-muted font-mono">Apparel Studio & Retail, Beta Pilot</div>
+            </div>
+            <span class="badge badge-neutral font-mono text-xs">FC-05M</span>
+          </div>
+        </div>
+
+        <div class="card quote-card">
+          <p class="quote-body text-sm text-heading italic">
+            "We mounted the 7-digit model in our agency boardroom. Whenever a client campaign crosses a major milestone,
+            hearing the flaps click together brings immediate celebration to the room."
+          </p>
+          <div class="quote-author mt-4 pt-3 border-t border-subtle flex items-center justify-between">
+            <div>
+              <div class="font-bold text-heading text-xs">Sarah K.</div>
+              <div class="text-xs text-muted font-mono">Digital Media Group, Beta Pilot</div>
+            </div>
+            <span class="badge badge-neutral font-mono text-xs">FC-07M</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. FREQUENTLY ASKED QUESTIONS (FAQ) -->
+  <section class="faq-section py-16" id="faq" aria-labelledby="faq-heading">
+    <div class="container max-w-3xl">
+      <div class="text-center mb-12">
+        <span class="section-tag font-mono">QUESTIONS & ANSWERS</span>
+        <h2 id="faq-heading" class="section-title font-heading mt-2">
+          Frequently asked questions.
+        </h2>
+        <p class="section-subtitle text-muted mt-2">
+          Everything you need to know about the hardware, Meta Graph API integration, and everyday operation.
+        </p>
+      </div>
+
+      <div class="faq-accordion flex flex-col gap-3">
+        @for (item of FAQ_ITEMS; track $index) {
+        <div class="faq-item card" [class.is-open]="openFaqIndex === $index">
+          <button type="button" (click)="toggleFaq($index)"
+            class="faq-question-btn flex items-center justify-between w-full text-left"
+            [attr.aria-expanded]="openFaqIndex === $index">
+            <span class="font-heading font-bold text-heading text-sm">{{ item.question }}</span>
+            <span class="faq-toggle-icon" aria-hidden="true">{{ openFaqIndex === $index ? '−' : '+' }}</span>
+          </button>
+          @if (openFaqIndex === $index) {
+          <div class="faq-answer-pane pt-3 mt-2 border-t border-subtle text-sm text-muted">
+            {{ item.answer }}
+          </div>
+          }
+        </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. FINAL CTA & INQUIRY FORM -->
+  <section class="final-cta-section py-20 bg-surface border-t border-subtle" id="get-yours"
+    aria-labelledby="order-heading">
+    <div class="container max-w-4xl">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div>
+          <span class="section-tag font-mono">COMMERCIAL ORDERS & INQUIRIES</span>
+          <h2 id="order-heading" class="section-title font-heading text-3xl mt-2">
+            Bring your follower count into the room.
+          </h2>
+          <p class="text-sm text-muted mt-3 leading-relaxed">
+            Reserve your physical Instagram follower counter or talk to our hardware specialists about multi-store venue
+            rollouts.
+          </p>
+
+          <div class="features-summary-list flex flex-col gap-2.5 mt-6 text-xs text-heading font-medium">
+            <div class="flex items-center gap-2">
+              <span class="text-success">✓</span>
+              <span>Ships ready-to-run with 5V USB-C cable & quick-start guide</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-success">✓</span>
+              <span>Continuous firmware updates delivered over-the-air (OTA)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-success">✓</span>
+              <span>Standard 1-year hardware replacement warranty</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Inquiry / Reservation Form -->
+        <div class="card inquiry-card">
+          @if (inquirySubmitted) {
+          <div class="inquiry-success-box text-center py-6 animate-fade-in">
+            <span class="text-4xl">🎉</span>
+            <h3 class="text-lg font-bold text-heading mt-3">Inquiry Received!</h3>
+            <p class="text-xs text-muted mt-2 max-w-xs mx-auto">
+              Thank you, <strong>{{ inquiryName }}</strong>! Our hardware team has received your inquiry for the
+              <strong>Model FC-0{{ inquiryModel }}M</strong> counter. We will reach out to <strong>{{ inquiryEmail
+                }}</strong> with fulfillment details.
+            </p>
+            <button type="button" (click)="resetInquiryForm()" class="btn btn-secondary btn-sm mt-5">
+              Send Another Inquiry
+            </button>
+          </div>
+          } @else {
+          <form (ngSubmit)="submitInquiry()" #orderForm="ngForm">
+            <h3 class="text-base font-bold text-heading mb-3">Reserve Your Unit</h3>
+
+            <div class="form-group mb-3">
+              <label class="form-label" for="inqName">Your Name</label>
+              <input type="text" id="inqName" name="inqName" [(ngModel)]="inquiryName" required
+                placeholder="e.g. Alex Rivera" class="form-control form-control-sm text-xs" />
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="form-label" for="inqEmail">Work Email</label>
+              <input type="email" id="inqEmail" name="inqEmail" [(ngModel)]="inquiryEmail" required
+                placeholder="alex@artisanbakery.com" class="form-control form-control-sm text-xs" />
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="form-label" for="inqHandle">Instagram Profile Handle</label>
+              <input type="text" id="inqHandle" name="inqHandle" [(ngModel)]="inquiryHandle"
+                placeholder="&#64;artisan_bakery" class="form-control form-control-sm text-xs" />
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="form-label">Hardware Model Preference</label>
+              <div class="grid grid-cols-2 gap-2">
+                <button type="button" (click)="inquiryModel = '5'" class="model-select-btn"
+                  [class.selected]="inquiryModel === '5'">
+                  <span class="font-bold text-xs">5-Digit Desk</span>
+                  <span class="text-dim text-xs">Up to 99K</span>
+                </button>
+
+                <button type="button" (click)="inquiryModel = '7'" class="model-select-btn"
+                  [class.selected]="inquiryModel === '7'">
+                  <span class="font-bold text-xs">7-Digit Flagship</span>
+                  <span class="text-dim text-xs">Up to 9.9M</span>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" [disabled]="orderForm.invalid || isSubmittingInquiry"
+              class="btn btn-primary w-full mt-2">
+              {{ isSubmittingInquiry ? 'Submitting Reservation...' : 'Request Counter Allocation' }}
+            </button>
+          </form>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <app-site-footer></app-site-footer>
+</div>

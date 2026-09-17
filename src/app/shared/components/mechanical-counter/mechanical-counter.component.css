@@ -1,0 +1,598 @@
+/* ==========================================================================
+   Mechanical Counter - Physical Split-Flap Product Component
+   Themes: Sunset Wood (Reference Design), Classic Charcoal, Artisan Ivory
+   ========================================================================== */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.counter-presentation-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+.svg-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Floating Selector Controls (Reference Design Architecture)
+   -------------------------------------------------------------------------- */
+.floating-controls-panel {
+  z-index: 10;
+  max-width: 100%;
+}
+
+.floating-platforms-pill,
+.floating-actions-pill {
+  background: rgba(228, 222, 214, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 8px rgba(28, 25, 23, 0.06);
+  gap: 4px;
+}
+
+/* Platform buttons */
+.platform-btn {
+  position: relative;
+  width: 38px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #4a4540;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.platform-btn .pill-icon {
+  width: 17px;
+  height: 17px;
+}
+
+.platform-btn.active {
+  background: #ffffff;
+  color: #181614;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.platform-btn.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.heart-badge {
+  position: absolute;
+  top: -4px;
+  left: 2px;
+  font-size: 11px;
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(220, 38, 38, 0.4));
+  animation: heartPop 0.3s ease;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Variant & Action buttons */
+.variant-btn {
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: #4a4540;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.variant-btn:hover:not(.active) {
+  color: #181614;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.variant-btn.active {
+  background: #ffffff;
+  color: #181614;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.775rem;
+  font-weight: 600;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.5);
+  color: #2b2724;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.theme-icon {
+  font-size: 0.85rem;
+}
+
+.buy-cta-btn {
+  padding: 5px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  color: #ffffff;
+  background: #181614;
+  border: 1px solid #181614;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.buy-cta-btn:hover {
+  background: #2a2522;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   Chassis Outer Housing (Authentic Mechanical Enclosure)
+   -------------------------------------------------------------------------- */
+.counter-chassis-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+}
+
+.chassis-body {
+  position: relative;
+  border-radius: 20px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chassis-body.chassis-5 {
+  max-width: 620px;
+}
+
+.chassis-body.chassis-7 {
+  max-width: 800px;
+}
+
+/* THEME 1: Sunset Wood (Reference Design) */
+.chassis-body.theme-sunset-wood {
+  background: linear-gradient(175deg, #f6eee0 0%, #ecddc7 45%, #e1ceb3 100%);
+  border: 2px solid #d4c0a5;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -3px 6px rgba(100, 75, 45, 0.12),
+    0 1px 2px rgba(35, 25, 15, 0.05),
+    0 20px 42px -10px rgba(45, 30, 15, 0.2);
+}
+
+.chassis-body.theme-sunset-wood .chassis-logo-plate {
+  background: #fdfaf5;
+  border: 1.5px solid #dccbb4;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.04),
+    0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.chassis-body.theme-sunset-wood .recessed-chamber {
+  background: #ecdcc6;
+  border: 2px solid #d0bea3;
+  box-shadow:
+    inset 0 2px 6px rgba(90, 65, 40, 0.18),
+    0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.chassis-body.theme-sunset-wood .flap-half {
+  background: linear-gradient(180deg, #f58529 0%, #e1306c 38%, #c13584 72%, #8134af 100%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35);
+}
+
+.chassis-body.theme-sunset-wood .digit-num {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(100, 20, 60, 0.45);
+}
+
+.chassis-body.theme-sunset-wood .hinge-slit {
+  background: #260f1e;
+}
+
+/* THEME 2: Classic Charcoal */
+.chassis-body.theme-classic-charcoal {
+  background: linear-gradient(175deg, #2a2724 0%, #1c1a18 50%, #141311 100%);
+  border: 2px solid #3d3834;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 20px 42px -10px rgba(0, 0, 0, 0.45);
+}
+
+.chassis-body.theme-classic-charcoal .chassis-logo-plate {
+  background: #191816;
+  border: 1.5px solid #2e2a26;
+}
+
+.chassis-body.theme-classic-charcoal .recessed-chamber {
+  background: #0d0c0b;
+  border: 2px solid #242220;
+}
+
+.chassis-body.theme-classic-charcoal .flap-half {
+  background: linear-gradient(180deg, #22201d 0%, #151412 100%);
+}
+
+.chassis-body.theme-classic-charcoal .digit-num {
+  color: #f7f4ee;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* THEME 3: Artisan Ivory */
+.chassis-body.theme-artisan-ivory {
+  background: linear-gradient(175deg, #fbf8f2 0%, #f1e9dc 100%);
+  border: 2px solid #ded3c1;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.95),
+    0 20px 42px -10px rgba(40, 30, 20, 0.15);
+}
+
+.chassis-body.theme-artisan-ivory .chassis-logo-plate {
+  background: #ffffff;
+  border: 1.5px solid #dfd4c3;
+}
+
+.chassis-body.theme-artisan-ivory .recessed-chamber {
+  background: #11100e;
+  border: 2px solid #2d2925;
+}
+
+.chassis-body.theme-artisan-ivory .flap-half {
+  background: linear-gradient(180deg, #1f1d1a 0%, #141311 100%);
+}
+
+.chassis-body.theme-artisan-ivory .digit-num {
+  color: #f5f2eb;
+}
+
+/* --------------------------------------------------------------------------
+   Prominent Instagram Square Logo Plate (Left side)
+   -------------------------------------------------------------------------- */
+.chassis-logo-plate {
+  width: 78px;
+  height: 98px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.ig-symbol-tile {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ig-camera-glyph {
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(0 2px 5px rgba(221, 42, 123, 0.28));
+}
+
+/* --------------------------------------------------------------------------
+   Recessed Optical Window & Split-Flap Drums
+   -------------------------------------------------------------------------- */
+.recessed-chamber {
+  position: relative;
+  border-radius: 12px;
+  padding: 8px 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.chamber-glass-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+  z-index: 8;
+}
+
+.digit-drums-container {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  position: relative;
+  z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   Individual Split-Flap Reel Unit
+   -------------------------------------------------------------------------- */
+.split-flap-unit {
+  position: relative;
+  width: 58px;
+  height: 88px;
+  perspective: 340px;
+  user-select: none;
+  border-radius: 6px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease;
+}
+
+.flap-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 44px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-sizing: border-box;
+}
+
+.digit-num {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 3.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Upper Half Leaf */
+.flap-top {
+  top: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  transform-origin: 50% 100%;
+}
+
+.flap-top .digit-num {
+  top: 0;
+  line-height: 88px;
+}
+
+/* Lower Half Leaf */
+.flap-bottom {
+  bottom: 0;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  transform-origin: 50% 0%;
+}
+
+.flap-bottom .digit-num {
+  bottom: 0;
+  line-height: 88px;
+}
+
+/* Static resting backgrounds */
+.static-top { z-index: 1; }
+.static-bottom { z-index: 1; }
+
+/* Folding leaves (Animated during .flipping) */
+.fold-top { z-index: 3; }
+.fold-bottom {
+  z-index: 2;
+  transform: rotateX(90deg);
+}
+
+/* Mechanical 3D Flap Motion */
+.split-flap-unit.flipping .fold-top {
+  animation: flapFoldTop 0.22s cubic-bezier(0.4, 0, 0.7, 1) forwards;
+}
+
+.split-flap-unit.flipping .fold-bottom {
+  animation: flapFoldBottom 0.22s cubic-bezier(0.3, 0, 0.2, 1) 0.18s forwards;
+}
+
+@keyframes flapFoldTop {
+  0% {
+    transform: rotateX(0deg);
+    filter: brightness(1);
+  }
+  100% {
+    transform: rotateX(-90deg);
+    filter: brightness(0.7);
+  }
+}
+
+@keyframes flapFoldBottom {
+  0% {
+    transform: rotateX(90deg);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: rotateX(0deg);
+    filter: brightness(1);
+  }
+}
+
+/* Center Mechanical Hinge Axis */
+.hinge-slit {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform: translateY(-50%);
+  z-index: 6;
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.hinge-pin {
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 6px;
+  background: #50463c;
+  border-radius: 1px;
+  transform: translateY(-50%);
+  z-index: 7;
+}
+
+.pin-left { left: 0; border-top-left-radius: 2px; border-bottom-left-radius: 2px; }
+.pin-right { right: 0; border-top-right-radius: 2px; border-bottom-right-radius: 2px; }
+
+/* --------------------------------------------------------------------------
+   Contact Shadow & Plinth Grounding
+   -------------------------------------------------------------------------- */
+.counter-contact-shadow {
+  height: 26px;
+  margin-top: -6px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(35, 25, 15, 0.3) 0%, rgba(35, 25, 15, 0.08) 55%, transparent 75%);
+  filter: blur(6px);
+  z-index: 0;
+  transition: width 0.35s ease;
+}
+
+.counter-contact-shadow.shadow-5 { width: 520px; }
+.counter-contact-shadow.shadow-7 { width: 700px; }
+
+/* --------------------------------------------------------------------------
+   Accessibility: Reduced Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .split-flap-unit.flipping .fold-top,
+  .split-flap-unit.flipping .fold-bottom {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .chassis-body {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+  .chassis-logo-plate {
+    width: 60px;
+    height: 76px;
+  }
+  .ig-symbol-tile {
+    width: 44px;
+    height: 44px;
+  }
+  .ig-camera-glyph {
+    width: 40px;
+    height: 40px;
+  }
+  .split-flap-unit {
+    width: 44px;
+    height: 68px;
+  }
+  .flap-half {
+    height: 34px;
+  }
+  .digit-num {
+    font-size: 2.5rem;
+    line-height: 68px;
+  }
+  .counter-contact-shadow.shadow-5 { width: 360px; }
+  .counter-contact-shadow.shadow-7 { width: 480px; }
+}
+
+@media (max-width: 520px) {
+  .floating-controls-panel {
+    width: 100%;
+  }
+  .floating-actions-pill {
+    max-width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+  .variant-btn {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+  .theme-toggle-btn {
+    padding: 4px 8px;
+    font-size: 0.72rem;
+  }
+  .buy-cta-btn {
+    padding: 4px 12px;
+    font-size: 0.75rem;
+  }
+  .chassis-body {
+    flex-direction: row;
+    padding: 8px 10px;
+    gap: 8px;
+    max-width: 100%;
+    justify-content: center;
+  }
+  .chassis-logo-plate {
+    width: 46px;
+    height: 62px;
+    flex-shrink: 0;
+  }
+  .ig-symbol-tile {
+    width: 36px;
+    height: 36px;
+  }
+  .ig-camera-glyph {
+    width: 32px;
+    height: 32px;
+  }
+  .recessed-chamber {
+    padding: 4px 6px;
+  }
+  .digit-drums-container {
+    gap: 4px;
+  }
+  .split-flap-unit {
+    width: 40px;
+    height: 62px;
+  }
+  .flap-half {
+    height: 31px;
+  }
+  .digit-num {
+    font-size: 2.15rem;
+    line-height: 62px;
+  }
+  .counter-contact-shadow {
+    width: 95% !important;
+  }
+}
