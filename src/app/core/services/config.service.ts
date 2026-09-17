@@ -25,39 +25,25 @@ export class ConfigService {
   readonly apiUrl = signal<string>(this.getInitialApiUrl());
 
   /**
-   * Reads initial API URL from localStorage or environment fallback
+   * Reads initial API URL from environment
    */
   private getInitialApiUrl(): string {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const stored = localStorage.getItem(this.storageKey);
-      if (stored !== null && stored.trim().length > 0) {
-        return stored.trim().replace(/\/+$/, '');
-      }
-    }
     return (environment.apiUrl ?? 'https://localhost:7149').replace(/\/+$/, '');
   }
 
   /**
-   * Updates the Backend API URL at runtime and saves it to localStorage
+   * Updates the Backend API URL at runtime
    */
   setApiUrl(newUrl: string): void {
     const cleanUrl = (newUrl ?? '').trim().replace(/\/+$/, '');
     this.apiUrl.set(cleanUrl);
-    if (typeof window !== 'undefined' && window.localStorage) {
-      if (cleanUrl) {
-        localStorage.setItem(this.storageKey, cleanUrl);
-      } else {
-        localStorage.removeItem(this.storageKey);
-      }
-    }
   }
 
   /**
    * Resets the Backend API URL to the environment default
    */
   resetToDefault(): void {
-    const defaultUrl = (environment.apiUrl ?? 'https://localhost:7149').replace(/\/+$/, '');
-    this.setApiUrl(defaultUrl);
+    this.setApiUrl(environment.apiUrl ?? 'https://localhost:7149');
   }
 
   /**

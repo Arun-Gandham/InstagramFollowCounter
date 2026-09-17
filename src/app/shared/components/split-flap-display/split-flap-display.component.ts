@@ -41,38 +41,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
         </div>
       </div>
 
-      <!-- Laser-Etched Rating Plate & Controls -->
-      <div class="hardware-plate flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <svg class="plate-ig-icon" viewBox="0 0 24 24" fill="none">
-            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/>
-            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-            <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
-          </svg>
-          <span class="plate-text">MODEL: FC-0{{ digitCount }} MECHANICAL • STEPPER MOTOR REEL UNIT</span>
-        </div>
 
-        <div class="flex items-center gap-3">
-          <span class="plate-badge">{{ digitCount }}-DIGIT DRUM</span>
-          <!-- Sound Toggle -->
-          <button
-            type="button"
-            (click)="toggleSound()"
-            class="sound-toggle-btn"
-            [title]="soundEnabled ? 'Mute mechanical click' : 'Unmute mechanical click'"
-          >
-            @if (soundEnabled) {
-              <svg viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.764l-3.324-2.493H3a1 1 0 01-1-1v-4a1 1 0 011-1h2.059l3.324-2.493a1 1 0 011.059-.196zM13.293 6.293a1 1 0 011.414 0 5 5 0 010 7.414 1 1 0 01-1.414-1.414 3 3 0 000-4.586 1 1 0 010-1.414z" clip-rule="evenodd"/>
-              </svg>
-            } @else {
-              <svg viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.764l-3.324-2.493H3a1 1 0 01-1-1v-4a1 1 0 011-1h2.059l3.324-2.493a1 1 0 011.059-.196zm2.324 3.631a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L13.586 11l-1.879-1.879a1 1 0 010-1.414z" clip-rule="evenodd"/>
-              </svg>
-            }
-          </button>
-        </div>
-      </div>
     </div>
   `,
   styles: [`
@@ -131,15 +100,15 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
     }
     .flap-unit {
       position: relative;
-      width: 48px;
-      height: 78px;
+      width: 60px;
+      height: 96px;
       perspective: 450px;
       user-select: none;
     }
     @media (min-width: 640px) {
       .flap-unit {
-        width: 64px;
-        height: 98px;
+        width: 80px;
+        height: 120px;
       }
     }
     .flap-card {
@@ -178,14 +147,14 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5rem;
+      font-size: 3.25rem;
       font-weight: 800;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
       color: #f8fafc;
     }
     @media (min-width: 640px) {
       .flap-text {
-        font-size: 3.25rem;
+        font-size: 4.25rem;
       }
     }
     .flap-card.top .flap-text { top: 0; }
@@ -302,41 +271,7 @@ export class SplitFlapDisplayComponent implements OnChanges {
     }
   }
 
-  toggleSound(): void {
-    this.soundEnabled = !this.soundEnabled;
-  }
 
-  private playMechanicalTick(): void {
-    if (!this.soundEnabled) return;
-    try {
-      if (!this.audioCtx) {
-        const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-        this.audioCtx = new AudioContextClass();
-      }
-      if (this.audioCtx.state === 'suspended') {
-        this.audioCtx.resume();
-      }
-
-      // Micro-tick audio synthesis using Web Audio API
-      const osc = this.audioCtx.createOscillator();
-      const gain = this.audioCtx.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(140, this.audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(30, this.audioCtx.currentTime + 0.035);
-
-      gain.gain.setValueAtTime(0.08, this.audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, this.audioCtx.currentTime + 0.035);
-
-      osc.connect(gain);
-      gain.connect(this.audioCtx.destination);
-
-      osc.start();
-      osc.stop(this.audioCtx.currentTime + 0.04);
-    } catch {
-      // Audio policy fallback
-    }
-  }
 
   private updateDigits(): void {
     const rawNum = Math.max(0, this.count ?? 0);
@@ -357,9 +292,7 @@ export class SplitFlapDisplayComponent implements OnChanges {
       });
     }
 
-    if (hasChanged) {
-      this.playMechanicalTick();
-    }
+
 
     this.digits = newDigits;
     this.previousDigits = [...newDigits];

@@ -21,7 +21,7 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
             </div>
             <h1 class="text-2xl font-extrabold text-heading">Factory Device Provisioning</h1>
             <p class="subtitle text-sm text-muted mt-1">
-              Issue cryptographic hardware credentials, flash tokens, and generate packaging unboxing claim cards
+              Issue cryptographic hardware credentials, configure 5/7 digit mechanical drums, and generate packaging unboxing claim cards
             </p>
           </div>
 
@@ -33,9 +33,10 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
         <!-- Generated Device Packaging Card (Print Ready) -->
         @if (latestProvisioned) {
           <div class="card label-print-card mb-6 animate-fade-in">
-            <div class="flex items-center justify-between mb-4 pb-3 border-b border-subtle">
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-subtle flex-wrap gap-2">
               <div class="flex items-center gap-2">
                 <span class="badge badge-success">READY FOR PACKAGING</span>
+                <span class="badge badge-neutral font-mono">{{ latestProvisioned.digitCount }}-DIGIT REEL</span>
                 <span class="text-xs text-muted">Generated unit ready to be printed and flashed</span>
               </div>
               <button (click)="printLabel()" class="btn btn-secondary btn-sm flex items-center gap-1.5">
@@ -47,8 +48,8 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
             <div class="thermal-label-box">
               <div class="label-header flex justify-between items-center pb-3 border-b border-dashed border-subtle">
                 <div>
-                  <span class="label-brand">FOLLOWER COUNTER • MODEL FC-07 MECHANICAL</span>
-                  <div class="text-xs text-muted mt-0.5">AUTHENTIC ELECTRO-MECHANICAL PRODUCT CERTIFICATE</div>
+                  <span class="label-brand">FOLLOWER COUNTER • MODEL FC-0{{ latestProvisioned.digitCount }} MECHANICAL</span>
+                  <div class="text-xs text-muted mt-0.5">AUTHENTIC ELECTRO-MECHANICAL PRODUCT CERTIFICATE • {{ latestProvisioned.digitCount }}-DIGIT DRUM</div>
                 </div>
                 <span class="label-serial font-mono">{{ latestProvisioned.serialNumber }}</span>
               </div>
@@ -125,7 +126,7 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
               <div class="modal-header flex items-center justify-between p-6 border-b border-subtle">
                 <div>
                   <h3 class="text-base font-bold text-heading">Provision New Counter Unit</h3>
-                  <p class="text-xs text-muted">Generate cryptographic keys and serial number</p>
+                  <p class="text-xs text-muted">Select drum size and generate cryptographic keys</p>
                 </div>
                 <button (click)="closeModal()" class="btn-close">✕</button>
               </div>
@@ -142,6 +143,38 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
                 }
 
                 <form (ngSubmit)="onProvisionSubmit()">
+                  <!-- Drum Hardware Specification Selector -->
+                  <div class="form-group mb-4">
+                    <label class="form-label">Hardware Drum Specification</label>
+                    <div class="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        (click)="selectedDigitCount = 5"
+                        class="drum-select-card"
+                        [class.selected]="selectedDigitCount === 5"
+                      >
+                        <div class="flex items-center justify-between">
+                          <span class="font-bold text-sm">5 Digits</span>
+                          <span class="badge badge-neutral font-mono">FC-05</span>
+                        </div>
+                        <p class="text-xs text-muted mt-1">Compact desk unit • Up to 99,999 followers</p>
+                      </button>
+
+                      <button
+                        type="button"
+                        (click)="selectedDigitCount = 7"
+                        class="drum-select-card"
+                        [class.selected]="selectedDigitCount === 7"
+                      >
+                        <div class="flex items-center justify-between">
+                          <span class="font-bold text-sm">7 Digits</span>
+                          <span class="badge badge-neutral font-mono">FC-07</span>
+                        </div>
+                        <p class="text-xs text-muted mt-1">Pro showroom unit • Up to 9,999,999 followers</p>
+                      </button>
+                    </div>
+                  </div>
+
                   <div class="form-group mb-6">
                     <label class="form-label" for="serial">Serial Number</label>
                     <div class="flex gap-2">
@@ -170,7 +203,92 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
                       @if (isProvisioning) {
                         <span>Generating Keys...</span>
                       } @else {
-                        <span>Generate & Register Credentials</span>
+                        <span>Issue FC-0{{ selectedDigitCount }} Credentials</span>
+                      }
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Edit Modal -->
+        @if (showEditModal) {
+          <div class="modal-backdrop" (click)="closeEditModal()">
+            <div class="modal-content" (click)="$event.stopPropagation()">
+              <div class="modal-header flex items-center justify-between p-6 border-b border-subtle">
+                <div>
+                  <h3 class="text-base font-bold text-heading">Edit Hardware Configuration</h3>
+                  <p class="text-xs text-muted">Update drum size or serial number</p>
+                </div>
+                <button (click)="closeEditModal()" class="btn-close">✕</button>
+              </div>
+
+              <div class="p-6">
+                @if (editErrorMessage) {
+                  <div class="alert alert-danger mb-4 flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="8" x2="12" y2="12"></line>
+                    </svg>
+                    <span>{{ editErrorMessage }}</span>
+                  </div>
+                }
+
+                <form (ngSubmit)="onEditSubmit()">
+                  <div class="form-group mb-4">
+                    <label class="form-label">Hardware Drum Specification</label>
+                    <div class="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        (click)="editDigitCount = 5"
+                        class="drum-select-card"
+                        [class.selected]="editDigitCount === 5"
+                      >
+                        <div class="flex items-center justify-between">
+                          <span class="font-bold text-sm">5 Digits</span>
+                          <span class="badge badge-neutral font-mono">FC-05</span>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        (click)="editDigitCount = 7"
+                        class="drum-select-card"
+                        [class.selected]="editDigitCount === 7"
+                      >
+                        <div class="flex items-center justify-between">
+                          <span class="font-bold text-sm">7 Digits</span>
+                          <span class="badge badge-neutral font-mono">FC-07</span>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="form-group mb-6">
+                    <label class="form-label" for="editSerial">Serial Number</label>
+                    <input
+                      type="text"
+                      id="editSerial"
+                      name="editSerial"
+                      [(ngModel)]="editSerial"
+                      required
+                      class="form-control font-mono tracking-wider text-sm w-full"
+                    />
+                  </div>
+
+                  <div class="modal-actions flex items-center justify-between pt-4 border-t border-subtle">
+                    <button type="button" (click)="closeEditModal()" class="btn btn-secondary btn-sm">Cancel</button>
+                    <button
+                      type="submit"
+                      [disabled]="!editSerial || isEditing"
+                      class="btn btn-primary btn-sm flex items-center gap-2"
+                    >
+                      @if (isEditing) {
+                        <span>Saving...</span>
+                      } @else {
+                        <span>Save Changes</span>
                       }
                     </button>
                   </div>
@@ -187,7 +305,33 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
               <h3 class="text-base font-bold text-heading">Manufactured Hardware Inventory</h3>
               <p class="text-xs text-muted">Total registered and active devices in the fleet</p>
             </div>
-            <button (click)="loadDevices()" class="btn btn-secondary btn-xs">Refresh Inventory</button>
+            <div class="flex items-center gap-2">
+              <button (click)="seedFactory()" class="btn btn-secondary btn-xs mr-2">Generate Test Data</button>
+              <button (click)="loadDevices()" class="btn btn-secondary btn-xs">Refresh Inventory</button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 mb-4">
+            <div class="flex-grow">
+              <input 
+                type="text" 
+                [(ngModel)]="searchQuery" 
+                (keyup.enter)="onFilterChange()"
+                placeholder="Search by ID, Serial, Email..." 
+                class="form-control text-sm w-full"
+              >
+            </div>
+            <div>
+              <select [(ngModel)]="statusFilter" (change)="onFilterChange()" class="form-control text-sm">
+                <option value="">All Statuses</option>
+                <option value="Unclaimed">Unclaimed</option>
+                <option value="Active">Active</option>
+                <option value="Disabled">Disabled</option>
+              </select>
+            </div>
+            <div>
+              <button (click)="onFilterChange()" class="btn btn-primary btn-sm">Search</button>
+            </div>
           </div>
 
           <div class="table-responsive">
@@ -195,11 +339,11 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
               <thead>
                 <tr>
                   <th>Serial Number</th>
+                  <th>Drum Model</th>
                   <th>Hardware Status</th>
                   <th>Firmware</th>
                   <th>Assigned Customer</th>
                   <th>Manufactured Date</th>
-                  <th>Claimed Date</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -207,6 +351,11 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
                 @for (device of devices; track device.id) {
                   <tr>
                     <td class="font-mono font-bold text-heading">{{ device.serialNumber }}</td>
+                    <td>
+                      <span class="badge badge-neutral font-mono font-bold">
+                        FC-0{{ device.digitCount || 7 }} ({{ device.digitCount || 7 }} Digits)
+                      </span>
+                    </td>
                     <td><app-status-badge [status]="device.status"></app-status-badge></td>
                     <td class="font-mono text-xs">{{ device.firmwareVersion || 'v1.0.0' }}</td>
                     <td>
@@ -217,11 +366,15 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
                       }
                     </td>
                     <td class="text-xs text-muted">{{ device.createdAt | date:'shortDate' }}</td>
-                    <td class="text-xs text-muted">
-                      {{ device.claimedAt ? (device.claimedAt | date:'shortDate') : '—' }}
-                    </td>
                     <td>
                       <div class="flex gap-2">
+                        <button
+                          (click)="openEditModal(device)"
+                          class="btn btn-secondary btn-xs"
+                          title="Edit device configuration"
+                        >
+                          Edit
+                        </button>
                         @if (device.status === 'Unclaimed') {
                           <button
                             (click)="onResetClaim(device.id)"
@@ -246,6 +399,25 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
                 }
               </tbody>
             </table>
+          </div>
+
+          <div class="flex items-center justify-between mt-4">
+            <span class="text-xs text-muted">Showing {{ devices.length }} of {{ totalCount }}</span>
+            <div class="flex items-center gap-2">
+              <button 
+                class="btn btn-secondary btn-xs" 
+                [disabled]="currentPage === 1" 
+                (click)="onPageChange(currentPage - 1)">
+                Previous
+              </button>
+              <span class="text-xs font-mono">Page {{ currentPage }} of {{ totalPages }}</span>
+              <button 
+                class="btn btn-secondary btn-xs" 
+                [disabled]="currentPage === totalPages || totalPages === 0" 
+                (click)="onPageChange(currentPage + 1)">
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -307,6 +479,40 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
       font-size: 0.75rem;
       margin-top: 0.35rem;
     }
+    .drum-select-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .drum-select-card:hover {
+      border-color: #94a3b8;
+    }
+    .drum-select-card.selected {
+      border-color: #0f172a;
+      background: #f8fafc;
+      box-shadow: 0 0 0 1px #0f172a;
+    }
+    .drum-pill {
+      border: none;
+      background: transparent;
+      padding: 1px 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #64748b;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    .drum-pill:hover {
+      color: #0f172a;
+    }
+    .drum-pill.active {
+      background: #0f172a;
+      color: #ffffff;
+    }
     .btn-close {
       width: 28px;
       height: 28px;
@@ -335,18 +541,70 @@ export class DeviceProvisioningComponent implements OnInit {
   latestProvisioned: CreateDeviceResponse | null = null;
   showProvisionModal = false;
   newSerial = '';
+  selectedDigitCount = 7;
   isProvisioning = false;
   errorMessage = '';
+
+  // Pagination & Filters
+  currentPage = 1;
+  pageSize = 10;
+  totalCount = 0;
+  searchQuery = '';
+  statusFilter: any = '';
 
   ngOnInit(): void {
     this.loadDevices();
   }
 
   loadDevices(): void {
-    this.adminService.getDevices(1, 100).subscribe({
-      next: (res) => (this.devices = res),
+    this.adminService.getDevices(this.currentPage, this.pageSize, this.searchQuery, this.statusFilter).subscribe({
+      next: (res: any) => {
+        // If API returns PagedResult
+        if (res.items) {
+          this.devices = res.items;
+          this.totalCount = res.totalCount;
+        } else {
+          // Fallback if API hasn't restarted yet
+          this.devices = res;
+          this.totalCount = res.length;
+        }
+      },
       error: (err) => console.error('Failed to load admin devices', err)
     });
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.loadDevices();
+  }
+
+  onFilterChange(): void {
+    this.currentPage = 1;
+    this.loadDevices();
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalCount / this.pageSize);
+  }
+
+  seedFactory(): void {
+    if (!confirm('This will generate 100 random devices. Proceed?')) return;
+    this.adminService['http'].post('/api/v1/admin/devices/factory-seed?count=100', {}).subscribe({
+      next: () => {
+        alert('Factory devices generated!');
+        this.loadDevices();
+      },
+      error: (err: any) => alert('Factory generation failed: ' + err.message)
+    });
+  }
+
+  getDeviceDigits(serial: string): number {
+    const stored = localStorage.getItem('device_digits_' + serial);
+    return stored ? parseInt(stored, 10) : 7;
+  }
+
+  setDeviceDigits(serial: string, digits: number): void {
+    localStorage.setItem('device_digits_' + serial, digits.toString());
   }
 
   generateNewSerial(): void {
@@ -375,7 +633,10 @@ export class DeviceProvisioningComponent implements OnInit {
     this.isProvisioning = true;
     this.errorMessage = '';
 
-    this.adminService.createDevice({ serialNumber: this.newSerial }).subscribe({
+    this.adminService.createDevice({
+      serialNumber: this.newSerial,
+      digitCount: this.selectedDigitCount
+    }).subscribe({
       next: (res) => {
         this.isProvisioning = false;
         this.latestProvisioned = res;
@@ -405,6 +666,50 @@ export class DeviceProvisioningComponent implements OnInit {
     this.adminService.disableDevice(deviceId).subscribe({
       next: () => this.loadDevices(),
       error: (err) => alert(err.message || 'Failed to disable device.')
+    });
+  }
+
+  // Edit State
+  showEditModal = false;
+  editDeviceId = '';
+  editSerial = '';
+  editDigitCount = 7;
+  isEditing = false;
+  editErrorMessage = '';
+
+  openEditModal(device: AdminDevice): void {
+    this.editDeviceId = device.id;
+    this.editSerial = device.serialNumber;
+    this.editDigitCount = device.digitCount || 7;
+    this.showEditModal = true;
+    this.editErrorMessage = '';
+  }
+
+  closeEditModal(): void {
+    this.showEditModal = false;
+    this.editDeviceId = '';
+    this.editSerial = '';
+  }
+
+  onEditSubmit(): void {
+    if (!this.editSerial || !this.editDeviceId) return;
+
+    this.isEditing = true;
+    this.editErrorMessage = '';
+
+    this.adminService.updateDevice(this.editDeviceId, {
+      serialNumber: this.editSerial,
+      digitCount: this.editDigitCount
+    }).subscribe({
+      next: () => {
+        this.isEditing = false;
+        this.closeEditModal();
+        this.loadDevices();
+      },
+      error: (err) => {
+        this.isEditing = false;
+        this.editErrorMessage = err.message || 'Failed to update device.';
+      }
     });
   }
 

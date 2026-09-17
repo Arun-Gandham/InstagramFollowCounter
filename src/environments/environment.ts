@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7149'
+  apiUrl: 'https://arunsaiganndham.bsite.net'
 };

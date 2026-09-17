@@ -3,14 +3,23 @@ import { InstagramConnectionStatus } from './instagram.models';
 
 export interface CreateDeviceRequest {
   serialNumber: string;
+  digitCount?: number;
 }
 
 export interface CreateDeviceResponse {
   deviceId: string;
   serialNumber: string;
+  digitCount: number;
   plaintextDeviceSecret: string;
   plaintextClaimCode: string;
   claimExpiresAt: string;
+}
+
+export interface PagedResult<T> {
+  items: T[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
 }
 
 export interface AdminUser {
@@ -28,6 +37,7 @@ export interface AdminUser {
 export interface AdminDevice {
   id: string;
   serialNumber: string;
+  digitCount: number;
   status: DeviceStatus;
   firmwareVersion?: string;
   ownerUserId?: string;

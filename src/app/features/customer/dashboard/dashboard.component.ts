@@ -19,66 +19,36 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
   template: `
     <div class="dashboard-page">
       <div class="container">
-        <!-- Top Executive Welcome & Quick Actions -->
-        <div class="welcome-section flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="live-pill">
-                <span class="pulse-dot"></span>
-                LIVE REEL TELEMETRY
-              </span>
-              <span class="build-tag font-mono">FIRMWARE v2.4.0</span>
-            </div>
-            <h1 class="page-title text-2xl font-extrabold text-heading flex items-center gap-2">
-              Hardware Console
-              <span class="text-muted font-normal text-lg">— {{ authService.currentUser()?.displayName }}</span>
-            </h1>
-            <p class="subtitle text-sm text-muted mt-1">
-              Real-time synchronization and electro-mechanical reel provisioning
-            </p>
-          </div>
-
-          <div class="action-buttons flex items-center gap-3">
-            <button (click)="openClaimModal()" class="btn btn-secondary flex items-center gap-2">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-              </svg>
-              <span>Pair Counter</span>
-            </button>
-
-            <button (click)="connectInstagram()" class="btn btn-ig flex items-center gap-2">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-              </svg>
-              <span>Connect Instagram</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Banner Alerts -->
+        <!-- Banner Alerts (Toast) -->
         @if (successMessage) {
-          <div class="alert alert-success mt-4 flex items-center gap-3">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="toast-alert alert-success mt-4" [class.toast-closing]="isSuccessToastClosing">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
               <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
             <div class="flex-1 font-medium">{{ successMessage }}</div>
-            <button (click)="successMessage = ''" class="text-dim hover:text-heading">✕</button>
+            <button (click)="successMessage = ''" class="toast-close">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
           </div>
         }
         @if (errorMessage) {
-          <div class="alert alert-danger mt-4 flex items-center gap-3">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="toast-alert alert-danger mt-4" [class.toast-closing]="isErrorToastClosing">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
             <div class="flex-1 font-medium">{{ errorMessage }}</div>
-            <button (click)="errorMessage = ''" class="text-dim hover:text-heading">✕</button>
+            <button (click)="errorMessage = ''" class="toast-close">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
           </div>
         }
 
@@ -87,15 +57,29 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
           <div class="counter-stage">
             <!-- Stage Top Bar -->
             <div class="stage-header flex items-center justify-between flex-wrap gap-4">
-              <div class="flex items-center gap-3">
-                <div class="feed-badge flex items-center gap-2">
-                  <span class="active-dot"></span>
-                  <span class="feed-name font-mono">
-                    {{ activeAccount ? '@' + activeAccount.username : 'NO INSTAGRAM LINKED' }}
-                  </span>
-                </div>
+              <div class="flex items-center gap-3 flex-wrap">
                 @if (activeAccount) {
-                  <app-status-badge [status]="activeAccount.connectionStatus"></app-status-badge>
+                  <div class="feed-badge flex items-center gap-2">
+                    <span class="feed-name font-mono">
+                      {{ '@' + activeAccount.username }}
+                    </span>
+                  </div>
+                }
+                @if (activeLinkedDevices.length > 0) {
+                  <div class="stage-device-switcher flex items-center gap-2">
+                    <span class="switcher-label">ACTIVE COUNTER:</span>
+                    <select
+                      [ngModel]="selectedDevice?.id"
+                      (ngModelChange)="onSelectDeviceById($event)"
+                      class="custom-select text-xs font-mono bg-white border border-slate-300 rounded px-2 py-1"
+                    >
+                      @for (dev of activeLinkedDevices; track dev.id) {
+                        <option [value]="dev.id">
+                          {{ dev.nickname ? dev.nickname + ' (' + dev.serialNumber + ')' : dev.serialNumber }}
+                        </option>
+                      }
+                    </select>
+                  </div>
                 }
               </div>
 
@@ -123,24 +107,14 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
                   </button>
                 }
 
-                @if (isDevelopment) {
-                  <button
-                    (click)="simulateFollowerIncrement()"
-                    class="btn btn-secondary btn-sm flex items-center gap-1.5 border-dashed"
-                    title="Simulate follower increment to trigger real mechanical flip"
-                  >
-                    <span class="text-ig-coral font-bold">+5</span>
-                    <span>Test Flip</span>
-                  </button>
-                }
               </div>
             </div>
 
-            <!-- Mechanical Split-Flap Stage Canvas -->
+            <!-- Mechanical Split-Flap Stage Canvas with Dynamic Digit Count -->
             <div class="stage-canvas flex justify-center py-10 px-4">
               <app-split-flap-display
                 [count]="currentFollowerCount"
-                [digitCount]="7"
+                [digitCount]="activeDigitCount"
               ></app-split-flap-display>
             </div>
 
@@ -156,24 +130,36 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
               <div class="telemetry-cell">
                 <span class="telemetry-label">REEL SEQUENCE</span>
                 <div class="flex items-center gap-2">
-                  <span class="telemetry-value font-mono">
-                    #{{ activeAccount?.followerSequence ?? 0 }}
-                  </span>
-                  <span class="tag-synced">VERIFIED</span>
+                  @if (activeAccount) {
+                    <span class="telemetry-value font-mono">
+                      #{{ activeAccount.followerSequence ?? 0 }}
+                    </span>
+                    <span class="tag-synced">VERIFIED</span>
+                  } @else {
+                    <span class="telemetry-value font-mono text-dim">--</span>
+                  }
                 </div>
               </div>
 
               <div class="telemetry-cell">
-                <span class="telemetry-label">LAST RECORDED STAMP</span>
+                <span class="telemetry-label">DRUM CONFIGURATION</span>
                 <span class="telemetry-value font-mono text-sm">
-                  {{ activeAccount?.lastFollowerRefreshAt ? (activeAccount?.lastFollowerRefreshAt | date:'HH:mm:ss') : 'Idle' }}
+                  {{ activeDigitCount }} REELS (MODEL FC-0{{ activeDigitCount }})
                 </span>
               </div>
 
               <div class="telemetry-cell">
                 <span class="telemetry-label">TARGET TERMINAL</span>
-                <span class="telemetry-value font-mono text-sm truncate" [title]="boundDevice?.serialNumber || 'Unassigned'">
-                  {{ boundDevice ? boundDevice.serialNumber : 'None Assigned' }}
+                <span class="telemetry-value font-mono text-sm truncate" [title]="selectedDevice?.serialNumber || 'Unassigned'">
+                  @if (selectedDevice) {
+                    @if (selectedDevice.nickname) {
+                      {{ selectedDevice.nickname }} <span class="text-dim">({{ selectedDevice.serialNumber }})</span>
+                    } @else {
+                      {{ selectedDevice.serialNumber }}
+                    }
+                  } @else {
+                    None Assigned
+                  }
                 </span>
               </div>
             </div>
@@ -183,7 +169,7 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
         <!-- Management Columns: Hardware Units & Creator Accounts -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
           
-          <!-- Column 1: Hardware Units -->
+          <!-- Column 1: Hardware Units with Model Drum Sizes & Showroom Selector -->
           <div class="card">
             <div class="card-header flex items-center justify-between pb-3 border-b border-subtle">
               <div class="flex items-center gap-2.5">
@@ -196,7 +182,6 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
                 </div>
                 <div>
                   <h3 class="text-base font-bold text-heading">Physical Hardware Counters</h3>
-                  <p class="text-xs text-muted">Active electro-mechanical units assigned to your account</p>
                 </div>
               </div>
 
@@ -226,9 +211,26 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
                   <div class="device-card p-4 rounded-lg border border-subtle bg-surface hover:border-strong transition-all">
                     <div class="flex items-center justify-between mb-3">
                       <div class="flex items-center gap-3">
-                        <div class="hardware-chip">
+                        <div class="hardware-chip flex items-center gap-2">
                           <span class="chip-dot"></span>
-                          <span class="font-mono font-bold text-heading text-xs tracking-wider">{{ device.serialNumber }}</span>
+                          <span class="font-mono font-bold text-heading text-xs tracking-wider">
+                            @if (device.nickname) {
+                              {{ device.nickname }} <span class="text-dim font-normal">({{ device.serialNumber }})</span>
+                            } @else {
+                              {{ device.serialNumber }}
+                            }
+                          </span>
+                          <button 
+                            type="button" 
+                            class="text-dim hover:text-ig p-1 ml-1" 
+                            title="Edit Counter Nickname"
+                            (click)="openEditNicknameModal(device)"
+                          >
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <path d="M12 20h9"></path>
+                              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                            </svg>
+                          </button>
                         </div>
                         <app-status-badge [status]="device.status"></app-status-badge>
                       </div>
@@ -254,8 +256,8 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
                       <div class="bind-select-wrap">
                         @if (accounts.length > 0) {
                           <select
-                            [ngModel]="device.linkedInstagramAccount?.id ?? ''"
-                            (ngModelChange)="onBindDevice(device.id, $event)"
+                            [value]="device.linkedInstagramAccount?.id ?? ''"
+                            (change)="onBindDevice(device, $event)"
                             class="custom-select text-xs font-mono"
                           >
                             <option value="">-- Disconnect Feed --</option>
@@ -266,6 +268,45 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
                         } @else {
                           <span class="text-xs text-dim italic">Link IG first</span>
                         }
+                      </div>
+                    </div>
+
+                    <!-- Showroom Broadcast & Drum Configuration Row -->
+                    <div class="showroom-row flex items-center justify-between pt-3 mt-3 border-t border-subtle">
+                      <div class="flex items-center gap-2">
+                        @if (device.status === 'Active' && device.linkedInstagramAccount) {
+                          @if (selectedDevice?.id === device.id) {
+                            <span class="live-pill">
+                              <span class="pulse-dot"></span>
+                              BROADCASTING ON SHOWROOM
+                            </span>
+                          } @else {
+                            <button
+                              type="button"
+                              (click)="selectDevice(device)"
+                              class="btn btn-secondary btn-xs flex items-center gap-1.5"
+                              title="Display this unit on the showroom counter stage"
+                            >
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                              </svg>
+                              <span>View on Counter</span>
+                            </button>
+                          }
+                        } @else {
+                          @if (device.status !== 'Active') {
+                            <span class="text-xs text-dim italic">Hardware inactive</span>
+                          } @else {
+                            <span class="text-xs text-danger font-medium italic">Link Instagram feed to broadcast</span>
+                          }
+                        }
+                      </div>
+
+                      <div class="drum-meta font-mono text-xs text-muted flex items-center gap-1.5">
+                        <span>Hardware Reel:</span>
+                        <strong class="text-heading font-bold">FC-0{{ device.digitCount || 7 }}</strong>
                       </div>
                     </div>
                   </div>
@@ -494,6 +535,93 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
             </div>
           </div>
         }
+        <!-- Edit Nickname Modal -->
+        @if (showEditNicknameModal) {
+          <div class="modal-backdrop" (click)="closeEditNicknameModal()">
+            <div class="modal-content" style="max-width: 400px" (click)="$event.stopPropagation()">
+              <div class="modal-top flex items-center justify-between p-6 border-b border-subtle">
+                <div class="flex items-center gap-3">
+                  <div class="modal-badge-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 20h9"></path>
+                      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="text-base font-bold text-heading">Counter Nickname</h3>
+                    <p class="text-xs text-muted">Set a friendly name for this display</p>
+                  </div>
+                </div>
+                <button (click)="closeEditNicknameModal()" class="btn-close">✕</button>
+              </div>
+              <div class="p-6">
+                <form (ngSubmit)="onNicknameSubmit()">
+                  <div class="form-group mb-6">
+                    <label class="form-label text-xs uppercase tracking-wider text-muted flex items-center justify-between" for="nicknameInput">
+                      <span>Friendly Name</span>
+                      <span class="text-dim font-normal lowercase">Max 50 chars</span>
+                    </label>
+                    <input
+                      id="nicknameInput"
+                      type="text"
+                      name="nickname"
+                      [(ngModel)]="editNicknameValue"
+                      placeholder="e.g., Downtown Store Front"
+                      class="form-control text-sm font-medium"
+                      maxlength="50"
+                    />
+                    <p class="text-xs text-dim mt-2 leading-relaxed">Leave this field blank to revert back to using the default hardware serial number.</p>
+                  </div>
+                  <div class="modal-footer-row flex items-center justify-end gap-2 pt-4 border-t border-subtle">
+                    <button type="button" (click)="closeEditNicknameModal()" class="btn btn-secondary btn-sm">Cancel</button>
+                    <button type="submit" [disabled]="isSavingNickname" class="btn btn-primary btn-sm flex items-center gap-2">
+                      @if (isSavingNickname) {
+                        <span>Saving...</span>
+                      } @else {
+                        <span>Save Nickname</span>
+                      }
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Confirm Bind Modal -->
+        @if (showBindConfirmModal) {
+          <div class="modal-backdrop" (click)="cancelBind()">
+            <div class="modal-content" style="max-width: 400px" (click)="$event.stopPropagation()">
+              <div class="modal-top flex items-center justify-between p-6 border-b border-subtle">
+                <div class="flex items-center gap-3">
+                  <div class="modal-badge-icon" style="background: #fef2f2; border-color: #fecaca; color: #dc2626;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                      <line x1="12" y1="9" x2="12" y2="13"></line>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="text-base font-bold text-heading">Confirm Action</h3>
+                    <p class="text-xs text-muted">Update active counter feed</p>
+                  </div>
+                </div>
+                <button (click)="cancelBind()" class="btn-close">✕</button>
+              </div>
+              <div class="p-6">
+                <p class="text-sm text-heading font-medium leading-relaxed mb-6">
+                  {{ bindConfirmMessage }}
+                </p>
+                <div class="modal-footer-row flex items-center justify-end gap-2 pt-4 border-t border-subtle">
+                  <button type="button" (click)="cancelBind()" class="btn btn-secondary btn-sm">Cancel</button>
+                  <button type="button" (click)="confirmBind()" class="btn btn-primary btn-sm bg-danger border-transparent" style="background-color: #dc2626; color: white;">
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       </div>
     </div>
   `,
@@ -575,29 +703,153 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
       font-weight: 700;
       color: #0f172a;
     }
+    .stage-device-switcher {
+      background: #f1f5f9;
+      padding: 3px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid #e2e8f0;
+    }
+    .switcher-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #64748b;
+    }
+    .device-segmented-control {
+      display: inline-flex;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      overflow: hidden;
+      gap: 1px;
+    }
+    .device-segmented-btn {
+      border: none;
+      background: transparent;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+    .device-segmented-btn:hover {
+      color: #0f172a;
+      background: #f8fafc;
+    }
+    .device-segmented-btn.active {
+      background: #0f172a;
+      color: #ffffff;
+    }
+    .device-segmented-btn .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+    .device-segmented-btn.active .dot {
+      background: #10b981;
+      box-shadow: 0 0 6px #10b981;
+    }
+    .drum-pill {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 3px;
+      background: rgba(100, 116, 139, 0.15);
+      color: inherit;
+    }
+    .device-segmented-btn.active .drum-pill {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+    .single-device-tag {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .drum-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+    }
+    .drum-model-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      font-size: 0.7rem;
+    }
+    .drum-spec-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      background: #f8fafc;
+      border: 1px solid var(--border-default);
+    }
+    .drum-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #64748b;
+    }
+    .drum-val {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
     .stage-canvas {
       background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f8fafc 100%);
     }
     .stage-telemetry {
-      padding: 1.25rem 1.5rem;
-      background: #f8fafc;
+      padding: 1.5rem;
+      background: #ffffff;
       border-top: 1px solid var(--border-subtle);
+      border-bottom-left-radius: var(--radius-lg);
+      border-bottom-right-radius: var(--radius-lg);
     }
     .telemetry-cell {
+      background: #f8fafc;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1rem;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 6px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+      transition: border-color 0.2s;
+    }
+    .telemetry-cell:hover {
+      border-color: #cbd5e1;
     }
     .telemetry-label {
       font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
+      font-weight: 800;
+      letter-spacing: 0.1em;
       color: #64748b;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .telemetry-value {
-      font-size: 1.15rem;
+      font-size: 1.25rem;
       font-weight: 800;
       color: #0f172a;
+      letter-spacing: -0.02em;
     }
     .tag-synced {
       font-size: 0.6rem;
@@ -731,8 +983,9 @@ export class DashboardComponent implements OnInit {
   devices: Device[] = [];
   accounts: InstagramAccount[] = [];
   activeAccount: InstagramAccount | null = null;
-  boundDevice: Device | null = null;
+  selectedDevice: Device | null = null;
 
+  activeDigitCount = 7;
   currentFollowerCount = 0;
   isRefreshing = false;
   isDevelopment = true;
@@ -744,8 +997,104 @@ export class DashboardComponent implements OnInit {
   isClaiming = false;
   claimErrorMessage = '';
 
-  successMessage = '';
-  errorMessage = '';
+  private _successMessage = '';
+  private _errorMessage = '';
+  isSuccessToastClosing = false;
+  isErrorToastClosing = false;
+  private toastTimeout: any;
+
+  get successMessage(): string { return this._successMessage; }
+  set successMessage(val: string) {
+    if (val) {
+      this.isSuccessToastClosing = false;
+      this._successMessage = val;
+      this.startToastTimer('success');
+    } else {
+      this.closeSuccessToast();
+    }
+  }
+
+  get errorMessage(): string { return this._errorMessage; }
+  set errorMessage(val: string) {
+    if (val) {
+      this.isErrorToastClosing = false;
+      this._errorMessage = val;
+      this.startToastTimer('error');
+    } else {
+      this.closeErrorToast();
+    }
+  }
+
+  private startToastTimer(type: 'success' | 'error'): void {
+    clearTimeout(this.toastTimeout);
+    this.toastTimeout = setTimeout(() => {
+      if (type === 'success') this.closeSuccessToast();
+      if (type === 'error') this.closeErrorToast();
+    }, 4500); // Start exit animation at 4.5s
+  }
+
+  private closeSuccessToast(): void {
+    if (!this._successMessage) return;
+    this.isSuccessToastClosing = true;
+    setTimeout(() => {
+      this._successMessage = '';
+      this.isSuccessToastClosing = false;
+    }, 400);
+  }
+
+  private closeErrorToast(): void {
+    if (!this._errorMessage) return;
+    this.isErrorToastClosing = true;
+    setTimeout(() => {
+      this._errorMessage = '';
+      this.isErrorToastClosing = false;
+    }, 400);
+  }
+
+  // Nickname Modal State
+  showEditNicknameModal = false;
+  editNicknameDeviceId = '';
+  editNicknameValue = '';
+  isSavingNickname = false;
+
+  openEditNicknameModal(device: Device): void {
+    this.showEditNicknameModal = true;
+    this.editNicknameDeviceId = device.id;
+    this.editNicknameValue = device.nickname || '';
+  }
+
+  closeEditNicknameModal(): void {
+    this.showEditNicknameModal = false;
+    this.editNicknameDeviceId = '';
+    this.editNicknameValue = '';
+  }
+
+  onNicknameSubmit(): void {
+    if (!this.editNicknameDeviceId) return;
+    
+    this.isSavingNickname = true;
+    this.deviceService.updateNickname(this.editNicknameDeviceId, this.editNicknameValue || null).subscribe({
+      next: () => {
+        this.isSavingNickname = false;
+        this.closeEditNicknameModal();
+        this.successMessage = 'Nickname updated successfully.';
+        this.loadData();
+      },
+      error: (err) => {
+        this.isSavingNickname = false;
+        this.errorMessage = err.message || 'Failed to update nickname.';
+      }
+    });
+  }
+
+  /**
+   * Filter active devices that have an assigned Instagram account
+   */
+  get activeLinkedDevices(): Device[] {
+    return this.devices.filter(
+      (d) => d.status === 'Active' && !!d.linkedInstagramAccount
+    );
+  }
 
   ngOnInit(): void {
     this.loadData();
@@ -774,24 +1123,50 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  private updateActiveDisplay(): void {
-    if (this.accounts.length > 0) {
-      this.activeAccount = this.accounts[0];
-      this.currentFollowerCount = this.activeAccount.followerCount ?? 0;
+  selectDevice(device: Device): void {
+    this.selectedDevice = device;
+    this.activeDigitCount = device.digitCount || 7;
+
+    if (device.linkedInstagramAccount) {
+      const matched = this.accounts.find((a) => a.id === device.linkedInstagramAccount?.id);
+      this.activeAccount = matched || {
+        id: device.linkedInstagramAccount.id,
+        instagramUserId: device.linkedInstagramAccount.id,
+        username: device.linkedInstagramAccount.username,
+        connectionStatus: device.linkedInstagramAccount.connectionStatus,
+        followerCount: device.linkedInstagramAccount.followerCount,
+        followerSequence: 0,
+        requiresReauthorization: false,
+        createdAt: new Date().toISOString()
+      };
+      this.currentFollowerCount =
+        this.activeAccount?.followerCount ??
+        device.linkedInstagramAccount.followerCount ??
+        0;
     } else {
       this.activeAccount = null;
       this.currentFollowerCount = 0;
     }
+  }
 
-    if (this.activeAccount && this.devices.length > 0) {
-      this.boundDevice =
-        this.devices.find((d) => d.linkedInstagramAccount?.id === this.activeAccount?.id) ??
-        this.devices[0] ??
-        null;
-    } else if (this.devices.length > 0) {
-      this.boundDevice = this.devices[0];
+  private updateActiveDisplay(): void {
+    // 1. If currently selected device exists, refresh its state
+    if (this.selectedDevice) {
+      const current = this.devices.find((d) => d.id === this.selectedDevice!.id);
+      if (current) {
+        this.selectDevice(current);
+        return;
+      }
+    }
+
+    // 2. Otherwise default to first available device (prioritize active linked, then any device)
+    if (this.devices.length > 0) {
+      const firstLinked = this.activeLinkedDevices[0];
+      this.selectDevice(firstLinked || this.devices[0]);
     } else {
-      this.boundDevice = null;
+      this.selectedDevice = null;
+      this.activeAccount = null;
+      this.currentFollowerCount = 0;
     }
   }
 
@@ -843,27 +1218,64 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  onBindDevice(deviceId: string, instagramAccountId: string): void {
-    if (!instagramAccountId) {
-      this.deviceService.unbindInstagram(deviceId).subscribe({
+  showBindConfirmModal = false;
+  bindConfirmMessage = '';
+  pendingBindDevice: Device | null = null;
+  pendingBindAccountId = '';
+  pendingBindSelect: HTMLSelectElement | null = null;
+
+  onBindDevice(device: Device, event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    const instagramAccountId = select.value;
+    const isDisconnect = !instagramAccountId;
+
+    this.pendingBindDevice = device;
+    this.pendingBindAccountId = instagramAccountId;
+    this.pendingBindSelect = select;
+
+    const actionText = isDisconnect ? 'disconnect the active feed from this counter' : 'change the active feed for this counter';
+    this.bindConfirmMessage = `Are you sure you want to ${actionText}?`;
+    this.showBindConfirmModal = true;
+  }
+
+  cancelBind(): void {
+    this.showBindConfirmModal = false;
+    if (this.pendingBindSelect && this.pendingBindDevice) {
+      this.pendingBindSelect.value = this.pendingBindDevice.linkedInstagramAccount?.id ?? '';
+    }
+    this.pendingBindDevice = null;
+    this.pendingBindSelect = null;
+  }
+
+  confirmBind(): void {
+    this.showBindConfirmModal = false;
+    const device = this.pendingBindDevice!;
+    const instagramAccountId = this.pendingBindAccountId;
+    const select = this.pendingBindSelect!;
+    const isDisconnect = !instagramAccountId;
+
+    if (isDisconnect) {
+      this.deviceService.unbindInstagram(device.id).subscribe({
         next: () => {
           this.successMessage = 'Counter unlinked from Instagram.';
           this.loadData();
         },
         error: (err) => {
           this.errorMessage = err.message || 'Failed to unbind counter.';
+          select.value = device.linkedInstagramAccount?.id ?? '';
         }
       });
       return;
     }
 
-    this.deviceService.bindInstagram(deviceId, instagramAccountId).subscribe({
+    this.deviceService.bindInstagram(device.id, instagramAccountId).subscribe({
       next: () => {
         this.successMessage = 'Counter successfully bound to Instagram!';
         this.loadData();
       },
       error: (err) => {
         this.errorMessage = err.message || 'Failed to bind counter.';
+        select.value = device.linkedInstagramAccount?.id ?? '';
       }
     });
   }
@@ -906,19 +1318,10 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-
-  simulateFollowerIncrement(): void {
-    this.adminService.incrementFakeFollowers(5).subscribe({
-      next: (res) => {
-        if (this.activeAccount) {
-          this.onRefreshFollowers(this.activeAccount.id);
-        } else {
-          this.currentFollowerCount = res.currentFollowerCount;
-        }
-      },
-      error: (err) => {
-        this.errorMessage = err.message || 'Unable to increment fake followers.';
-      }
-    });
+  onSelectDeviceById(deviceId: string): void {
+    const dev = this.devices.find((d) => d.id === deviceId);
+    if (dev) {
+      this.selectDevice(dev);
+    }
   }
 }

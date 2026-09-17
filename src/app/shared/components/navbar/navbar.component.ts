@@ -3,15 +3,14 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ConfigService } from '../../../core/services/config.service';
-import { ApiConfigModalComponent } from '../api-config-modal/api-config-modal.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, ApiConfigModalComponent],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
     <header class="navbar-header">
-      <div class="container flex items-center justify-between">
+      <div class="fluid-container flex items-center justify-between">
         <!-- Brand Identity -->
         <a routerLink="/" class="brand-logo flex items-center gap-3">
           <div class="logo-box">
@@ -63,25 +62,8 @@ import { ApiConfigModalComponent } from '../api-config-modal/api-config-modal.co
           }
         </nav>
 
-        <!-- Right Side: API Indicator & Profile -->
+        <!-- Right Side: Profile -->
         <div class="user-actions flex items-center gap-3">
-          <!-- Live API Indicator -->
-          <button
-            type="button"
-            (click)="openApiModal()"
-            class="api-endpoint-pill flex items-center gap-2"
-            title="Configure Backend API endpoint URL"
-          >
-            <span class="api-radar-pulse">
-              <span class="radar-ping"></span>
-              <span class="radar-dot"></span>
-            </span>
-            <span class="api-label font-mono">{{ getShortApiUrl() }}</span>
-            <svg class="gear-icon" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
-            </svg>
-          </button>
-
           @if (authService.isAuthenticated()) {
             <!-- User Profile Pill -->
             <div class="user-profile-chip flex items-center gap-2">
@@ -114,14 +96,6 @@ import { ApiConfigModalComponent } from '../api-config-modal/api-config-modal.co
         </div>
       </div>
     </header>
-
-    <!-- Runtime API Configuration Modal -->
-    @if (isApiModalOpen) {
-      <app-api-config-modal
-        [isOpen]="isApiModalOpen"
-        (closeRequested)="closeApiModal()"
-      ></app-api-config-modal>
-    }
   `,
   styles: [`
     .navbar-header {
@@ -183,36 +157,45 @@ import { ApiConfigModalComponent } from '../api-config-modal/api-config-modal.co
       font-weight: 600;
       margin-top: 3px;
     }
+    .fluid-container {
+      width: 100%;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
     .nav-segmented {
-      background: #f1f5f9;
+      background: #f8fafc;
       border: 1px solid #e2e8f0;
       border-radius: var(--radius-full);
-      padding: 3px;
+      padding: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
     }
     .nav-tab {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.35rem 0.85rem;
+      gap: 0.5rem;
+      padding: 0.35rem 1rem;
       color: #64748b;
       font-size: 0.8125rem;
       font-weight: 600;
       border-radius: var(--radius-full);
-      transition: all 0.15s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       text-decoration: none;
     }
     .tab-icon {
-      width: 14px;
-      height: 14px;
-      opacity: 0.75;
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
     }
     .nav-tab:hover {
       color: #0f172a;
+      background: rgba(241, 245, 249, 0.5);
     }
     .nav-tab.active {
       color: #0f172a;
       background: #ffffff;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.1);
     }
     .nav-tab.active .tab-icon {
       color: #e1306c;
@@ -351,28 +334,6 @@ export class NavbarComponent {
   readonly authService = inject(AuthService);
   readonly configService = inject(ConfigService);
   private readonly router = inject(Router);
-
-  isApiModalOpen = false;
-
-  getShortApiUrl(): string {
-    const url = this.configService.apiUrl();
-    if (!url) return 'PROXY';
-    try {
-      const parsed = new URL(url);
-      return parsed.port ? `:${parsed.port}` : parsed.hostname;
-    } catch {
-      return url;
-    }
-  }
-
-  openApiModal(): void {
-    this.isApiModalOpen = true;
-  }
-
-  closeApiModal(): void {
-    this.isApiModalOpen = false;
-    this.authService.restoreSession().subscribe();
-  }
 
   getRoleBadgeClass(): string {
     const roles = this.authService.roles();

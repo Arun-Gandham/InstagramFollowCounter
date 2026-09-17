@@ -89,7 +89,7 @@ export class UserManagementComponent implements OnInit {
 
   loadUsers(): void {
     this.adminService.getUsers(1, 100).subscribe({
-      next: (res) => (this.users = res),
+      next: (res: any) => (this.users = res.items || res),
       error: (err) => console.error('Failed to load users', err)
     });
   }

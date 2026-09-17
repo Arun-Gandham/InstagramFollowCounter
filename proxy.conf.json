@@ -1,12 +1,12 @@
 {
   "/api": {
-    "target": "http://localhost:5033",
+    "target": "https://arunsaiganndham.bsite.net",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "info"
   },
   "/health": {
-    "target": "http://localhost:5033",
+    "target": "https://arunsaiganndham.bsite.net",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "info"

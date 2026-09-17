@@ -12,6 +12,7 @@ export interface LinkedInstagramAccount {
 export interface Device {
   id: string;
   serialNumber: string;
+  nickname?: string;
   status: DeviceStatus;
   firmwareVersion?: string;
   digitCount?: number;

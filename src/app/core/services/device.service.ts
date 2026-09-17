@@ -36,4 +36,8 @@ export class DeviceService {
   unbindInstagram(deviceId: string): Observable<void> {
     return this.http.delete<void>(`/api/v1/devices/${deviceId}/instagram`);
   }
+
+  updateNickname(deviceId: string, nickname: string | null): Observable<Device> {
+    return this.http.patch<Device>(`/api/v1/devices/${deviceId}/nickname`, { nickname });
+  }
 }
